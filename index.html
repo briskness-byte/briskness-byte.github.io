@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NostrComments — a comment thread on any page, that the page owner cannot delete</title>
+<meta name="description" content="A browser extension that attaches a comment thread to any URL. The comments live on Nostr relays instead of on the site being discussed, so the site cannot remove them.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" sizes="128x128" type="image/png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<meta property="og:title" content="NostrComments">
+<meta property="og:description" content="A comment thread on any page, stored on Nostr relays rather than on the site being discussed.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://briskness-byte.github.io/">
+<meta property="og:image" content="https://briskness-byte.github.io/favicon.png">
+<style>
+:root{
+  --bg:#ffffff; --fg:#14171a; --muted:#5b6570; --line:#e3e7ea;
+  --card:#f7f9fa; --brand:#0c75bc; --brand-fg:#ffffff; --brand-soft:#e8f3fb;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0f1216; --fg:#e8eaed; --muted:#a3adb8; --line:#252b33;
+    /* Dark keeps the extension's own blue, but flips the label: white on #3b82f6 is 3.68:1,
+       which fails AA. Near-black on it is 5.11:1, and the fill still stands 5.11:1 off the page. */
+    --card:#161b21; --brand:#3b82f6; --brand-fg:#0f1216; --brand-soft:#16202e;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+.wrap{max-width:720px; margin:0 auto; padding:0 22px}
+a{color:var(--brand)}
+a:hover{text-decoration:none}
+
+/* ---- header ------------------------------------------------------------ */
+header{text-align:center; padding:72px 0 8px}
+header img{width:88px; height:88px; border-radius:20px; display:block; margin:0 auto 22px}
+h1{font-size:2.5rem; line-height:1.15; margin:0 0 14px; letter-spacing:-.02em}
+.tagline{font-size:1.2rem; color:var(--muted); margin:0 auto; max-width:34em}
+
+/* ---- install ----------------------------------------------------------- */
+.install{display:flex; flex-wrap:wrap; gap:12px; justify-content:center; padding:38px 0 10px}
+.btn{
+  display:inline-flex; align-items:center; gap:9px; padding:13px 22px;
+  border-radius:11px; text-decoration:none; font-weight:600; font-size:1rem;
+  background:var(--brand); color:var(--brand-fg); border:1px solid var(--brand);
+}
+.btn:hover{opacity:.9}
+.btn.alt{background:transparent; color:var(--brand)}
+.btn svg{width:19px; height:19px; flex:none}
+.note{text-align:center; color:var(--muted); font-size:.9rem; margin:16px 0 0}
+
+/* ---- sections ---------------------------------------------------------- */
+section{padding:52px 0; border-top:1px solid var(--line); margin-top:52px}
+h2{font-size:1.4rem; margin:0 0 18px; letter-spacing:-.01em}
+p{margin:0 0 18px}
+ul{margin:0 0 18px; padding-left:1.25em}
+li{margin-bottom:10px}
+.lead{font-size:1.05rem}
+
+.cards{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.card{background:var(--card); border:1px solid var(--line); border-radius:13px; padding:20px}
+.card h3{margin:0 0 8px; font-size:1rem}
+.card p{margin:0; color:var(--muted); font-size:.94rem}
+
+blockquote{
+  margin:0 0 18px; padding:14px 18px; background:var(--brand-soft);
+  border-left:3px solid var(--brand); border-radius:0 9px 9px 0;
+}
+blockquote p:last-child{margin:0}
+
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.9em;
+  background:var(--card); border:1px solid var(--line); border-radius:5px; padding:1px 5px;
+}
+
+footer{
+  border-top:1px solid var(--line); margin-top:52px; padding:30px 0 60px;
+  color:var(--muted); font-size:.9rem; text-align:center;
+}
+footer a{margin:0 9px; display:inline-block}
+
+@media (max-width:520px){
+  header{padding-top:48px}
+  h1{font-size:2rem}
+  .tagline{font-size:1.05rem}
+  .btn{width:100%; justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <img src="/favicon.svg" alt="">
+  <h1>NostrComments</h1>
+  <p class="tagline">
+    A comment thread on any page on the web — stored on Nostr relays rather than on the site being
+    discussed, so the site owner cannot delete it.
+  </p>
+</header>
+
+<div class="install">
+  <a class="btn" href="https://chromewebstore.google.com/detail/nostrcomments/ebmgdpicceaencegknannfaljhbfgido">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 1 8.66 5H12a5 5 0 0 0-4.9 4.02L3.34 5.5A10 10 0 0 1 12 2zM2.4 7.3l3.77 6.53A5 5 0 0 0 12 17c.18 0 .35 0 .52-.03L9 22.74A10 10 0 0 1 2.4 7.3zm12.68 2.2h7.5A10 10 0 0 1 12 22h-.3l3.75-6.5a5 5 0 0 0-.37-6zM12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7z"/></svg>
+    Chrome
+  </a>
+  <a class="btn" href="https://addons.mozilla.org/en-US/firefox/addon/nostrcomments/">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 1.8a8.2 8.2 0 0 1 7.3 4.5c-.6-1.1-1.6-1.7-2.7-1.6-1.7.2-2.3 1.6-4.1 1.9-2.3.4-4-1-5.6-.2C5.2 9.1 4.4 10.6 4.5 12A8.2 8.2 0 0 1 12 3.8zM5.1 14.4c.9 2.4 3 4.2 5.6 4.6 3.4.5 6.3-1.3 7.4-4 .6-1.6.4-3.3-.4-4.4.4 1.5-.2 2.9-1.3 3.6-1.5 1-3.3.6-4.4-.3.9-.1 1.7-.7 2-1.5-1.5.6-3.2.3-4.4-.7-1-.8-1.6-2-1.5-3.2-1.4 1.4-2 3.7-1.3 5.7z"/></svg>
+    Firefox
+  </a>
+  <a class="btn alt" href="https://greasyfork.org/en/scripts/574551-nostrcomments">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    Userscript
+  </a>
+</div>
+
+<p class="note">
+  Free and open source. No account, no sign-up, no server.
+</p>
+
+<!-- Uncomment once the demo video exists.
+<section>
+  <h2>What it looks like</h2>
+  <video controls playsinline preload="metadata" poster="/demo-poster.png"
+         style="width:100%;border-radius:13px;border:1px solid var(--line)">
+    <source src="/demo.mp4" type="video/mp4">
+  </video>
+</section>
+-->
+
+<section>
+  <h2>What it does</h2>
+
+  <p class="lead">
+    Click the button in the corner of any page and a thread opens for that exact URL. Anyone else
+    with the extension sees the same thread. Nothing is asked of the site you are on, and nothing
+    is asked of you either — no account, no email, no password.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Nobody can delete it</h3>
+      <p>Comments are published to several independent relays. The site being discussed has no
+        say in it, and neither does any single relay operator.</p>
+    </div>
+    <div class="card">
+      <h3>Your identity is yours</h3>
+      <p>A cryptographic key you own, held in your browser or in a signer extension you already
+        use. It works on every other Nostr app too.</p>
+    </div>
+    <div class="card">
+      <h3>Nothing in the middle</h3>
+      <p>There is no server behind this. Your browser talks to the relays you choose, directly.
+        There is nothing else to trust, and nothing to breach.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>What it costs you</h2>
+
+  <p>
+    A comment system keyed to page addresses has an unavoidable consequence, and it is better said
+    out loud than buried:
+  </p>
+
+  <blockquote>
+    <p>
+      The relays you configure learn which pages you open a thread on. That is inherent to how it
+      works, not an oversight — the relay has to be asked about a URL in order to answer about it.
+    </p>
+  </blockquote>
+
+  <p>
+    Nothing else leaves your browser. There is no analytics, no telemetry, no account, and no
+    server of ours to send anything to. Which relays you use is your choice, and you can change
+    them. It is all written out in
+    <a href="https://github.com/briskness-byte/NostrComments/blob/main/PRIVACY.md">the privacy
+    policy</a>, in full, before you install anything.
+  </p>
+</section>
+
+<section>
+  <h2>You can check all of this</h2>
+
+  <p>
+    <strong>There is no build step.</strong> The file you install is the file in the repository —
+    readable JavaScript, not a bundle. You can diff one against the other, and you do not have to
+    take any of the claims above on faith.
+  </p>
+
+  <ul>
+    <li><a href="https://github.com/briskness-byte/NostrComments">The source</a>, all of it.</li>
+    <li><a href="https://github.com/briskness-byte/NostrComments/blob/main/docs/SECURITY-AUDIT-2026-08.md">A published security audit</a>
+        — findings, fixes, and the things deliberately left alone, with the reasoning.</li>
+    <li><a href="https://github.com/briskness-byte/NostrComments/blob/main/SECURITY.md">How to report a vulnerability</a>
+        privately.</li>
+    <li>A dependency-free test suite that runs the shipped code: <code>node tests/run.mjs</code>.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Support it</h2>
+
+  <p>
+    This is one person's side project, given away free, with no income beyond what people choose to
+    send. If it is useful to you, there are tip addresses on
+    <a href="https://github.com/briskness-byte/NostrComments#support">the project page</a>.
+  </p>
+  <p>
+    Reporting a bug that you can reproduce is worth as much, and often more.
+  </p>
+</section>
+
+<footer>
+  <a href="https://github.com/briskness-byte/NostrComments">Source</a>
+  <a href="https://github.com/briskness-byte/NostrComments/blob/main/PRIVACY.md">Privacy</a>
+  <a href="https://github.com/briskness-byte/NostrComments/blob/main/SECURITY.md">Security</a>
+  <a href="https://github.com/briskness-byte/NostrComments/releases">Releases</a>
+  <p style="margin:18px 0 0">MIT licensed. Built on <a href="https://nostr.com/">Nostr</a>.</p>
+</footer>
+
+</div>
+</body>
+</html>
