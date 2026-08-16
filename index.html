@@ -78,6 +78,20 @@ code{
   background:var(--card); border:1px solid var(--line); border-radius:5px; padding:1px 5px;
 }
 
+/* An address that is wrong by one character is money gone, so they are shown in full rather than
+   truncated, wrap instead of scrolling out of sight, and carry a copy button — selecting 95
+   characters of Monero address by hand on a phone is how mistakes happen. */
+.addrs{margin:0 0 18px}
+.addrs dt{font-weight:600; font-size:.88rem; color:var(--muted); margin-top:15px}
+.addrs dd{margin:5px 0 0; display:flex; gap:8px; align-items:flex-start}
+.addrs code{flex:1; min-width:0; overflow-wrap:anywhere; padding:8px 10px; line-height:1.5}
+.copy{
+  flex:none; font-family:inherit; font-size:.82rem; font-weight:600; padding:7px 13px;
+  border-radius:8px; border:1px solid var(--line); background:var(--card);
+  color:var(--fg); cursor:pointer;
+}
+.copy:hover,.copy[data-done]{border-color:var(--brand); color:var(--brand)}
+
 footer{
   border-top:1px solid var(--line); margin-top:52px; padding:30px 0 60px;
   color:var(--muted); font-size:.9rem; text-align:center;
@@ -206,12 +220,36 @@ footer a{margin:0 9px; display:inline-block}
 </section>
 
 <section>
-  <h2>Support it</h2>
+  <h2>Support</h2>
 
   <p>
-    This is one person's side project, given away free, with no income beyond what people choose to
-    send. If it is useful to you, there are tip addresses on
-    <a href="https://github.com/briskness-byte/NostrComments#support">the project page</a>.
+    NostrComments is free and open source, and every feature stays that way — there is no paid tier
+    and nothing is held back. If it is useful to you, there is a one-line <strong>Support the
+    developer</strong> row at the bottom of the comment panel — a zap or two, and an arrow that
+    opens the rest — sending sats straight from your wallet to mine over Lightning. No account, no
+    server in between.
+  </p>
+
+  <p>You can also zap directly:</p>
+
+  <dl class="addrs">
+    <dt>Lightning</dt>
+    <dd><code>slurpnc@coinos.io</code><button type="button" class="copy" data-v="slurpnc@coinos.io">Copy</button></dd>
+
+    <dt>Nostr</dt>
+    <dd><code>npub1ewxm82gprxwkh9qznauyey6vwx62xetpsux3prnmddkyevasatgswmds9e</code><button type="button" class="copy" data-v="npub1ewxm82gprxwkh9qznauyey6vwx62xetpsux3prnmddkyevasatgswmds9e">Copy</button></dd>
+
+    <dt>On-chain Bitcoin</dt>
+    <dd><code>198yNVWJz2H8PwmNsX72URVVV9pRbxMb18</code><button type="button" class="copy" data-v="198yNVWJz2H8PwmNsX72URVVV9pRbxMb18">Copy</button></dd>
+
+    <dt>Monero</dt>
+    <dd><code>87aDTPD9HQx2QenKsS7MvHDdqsziFPD7UB37X6G5XVXc2ZPhAs8DdEKUPYJijVcRjj1gU5KvxLCTfWUKWqrd1D5o8uw5EpM</code><button type="button" class="copy" data-v="87aDTPD9HQx2QenKsS7MvHDdqsziFPD7UB37X6G5XVXc2ZPhAs8DdEKUPYJijVcRjj1gU5KvxLCTfWUKWqrd1D5o8uw5EpM">Copy</button></dd>
+  </dl>
+
+  <p>
+    The same list lives in
+    <a href="https://github.com/briskness-byte/NostrComments#support">the project's README</a>, which
+    is the copy to check against if you ever want a second source for an address.
   </p>
   <p>
     Reporting a bug that you can reproduce is worth as much, and often more.
@@ -227,5 +265,29 @@ footer a{margin:0 9px; display:inline-block}
 </footer>
 
 </div>
+
+<script>
+// Where the clipboard is unavailable — an insecure origin, an older browser, a user who has denied
+// permission — the address is selected instead, so the fallback is still one gesture rather than a
+// dead button.
+for (const b of document.querySelectorAll('.copy')) {
+  b.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(b.dataset.v);
+    } catch {
+      const r = document.createRange();
+      r.selectNode(b.previousElementSibling);
+      const s = getSelection();
+      s.removeAllRanges();
+      s.addRange(r);
+      return;
+    }
+    const was = b.textContent;
+    b.textContent = 'Copied';
+    b.dataset.done = '1';
+    setTimeout(() => { b.textContent = was; delete b.dataset.done; }, 1600);
+  });
+}
+</script>
 </body>
 </html>
