@@ -67,12 +67,6 @@ li{margin-bottom:10px}
 .card h3{margin:0 0 8px; font-size:1rem}
 .card p{margin:0; color:var(--muted); font-size:.94rem}
 
-blockquote{
-  margin:0 0 18px; padding:14px 18px; background:var(--brand-soft);
-  border-left:3px solid var(--brand); border-radius:0 9px 9px 0;
-}
-blockquote p:last-child{margin:0}
-
 code{
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.9em;
   background:var(--card); border:1px solid var(--line); border-radius:5px; padding:1px 5px;
@@ -177,26 +171,30 @@ footer a{margin:0 9px; display:inline-block}
 </section>
 
 <section>
-  <h2>What it costs you</h2>
+  <h2>What the relays can see</h2>
 
   <p>
-    A comment system keyed to page addresses has an unavoidable consequence, and it is better said
-    out loud than buried:
+    There is no account, no telemetry, no analytics and no server of ours — nothing sits in the
+    middle of this to collect anything. What does leave your browser goes to the relays you picked,
+    and one thing about that is worth understanding before you install.
   </p>
 
-  <blockquote>
-    <p>
-      The relays you configure learn which pages you open a thread on. That is inherent to how it
-      works, not an oversight — the relay has to be asked about a URL in order to answer about it.
-    </p>
-  </blockquote>
+  <p>
+    <strong>To show a thread for a page, the extension has to ask the relays about that page.</strong>
+    So they see the addresses of pages you read, your IP address, and your public key if a relay asks
+    you to identify yourself. That is how a comment system attached to URLs works, rather than a
+    choice made on your behalf.
+  </p>
 
   <p>
-    Nothing else leaves your browser. There is no analytics, no telemetry, no account, and no
-    server of ours to send anything to. Which relays you use is your choice, and you can change
-    them. It is all written out in
-    <a href="https://github.com/briskness-byte/NostrComments/blob/main/PRIVACY.md">the privacy
-    policy</a>, in full, before you install anything.
+    Two things narrow it. It applies only to pages you actually read — a tab you never look at, or a
+    page you leave within a couple of seconds, is never mentioned to anyone. And the relays are
+    yours: drop any you do not trust, or point the extension at one you run yourself.
+  </p>
+
+  <p>
+    <a href="https://github.com/briskness-byte/NostrComments/blob/main/PRIVACY.md">The privacy
+    policy</a> sets all of it out in full, before you install anything.
   </p>
 </section>
 
