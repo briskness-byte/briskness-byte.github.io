@@ -1,0 +1,13 @@
+{
+  "addons": {
+    "attest@brisknessbyte.com": {
+      "updates": [
+        {
+          "version": "1.20.7",
+          "update_link": "https://briskness-byte.github.io/attest/attest-1.20.7.xpi",
+          "update_hash": "sha256:cf2902a620752d118ae1ef41ec116a1e30f787652c85243c02371d52e1e74bb4"
+        }
+      ]
+    }
+  }
+}
