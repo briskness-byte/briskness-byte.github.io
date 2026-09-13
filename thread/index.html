@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Read a NostrComments thread</title>
+<meta name="description" content="Read the comment thread attached to any web page, without installing anything.">
+<!--
+  A thread reader for people who have not installed the extension.
+
+  Everything happens in the visitor's browser: this page asks the same public relays the extension
+  asks, over WebSocket, and renders what comes back. There is no server here and no build step —
+  the same claim the extension makes about itself, and the reason this is a static file rather
+  than an app.
+
+  Two pieces are copied verbatim from NostrComments-Chrome/content.js and MUST stay identical to
+  it, because a thread is filed under the normalised URL: normalizeUrl (with _TRACKING) and
+  toBech32. If they drift, this page looks for threads under a key nothing was ever published to,
+  and the symptom is an empty page rather than an error.
+-->
+<style>
+  :root {
+    --bg:#0d1117; --panel:#161b22; --line:#222c38; --fg:#e7e9ea; --muted:#96a7b8;
+    --blue:#1d9bf0; --own:#2ea043;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+         font:15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 28px 18px 60px; }
+  header { display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+  header img { width:38px; height:38px; }
+  h1 { font-size:19px; margin:0; font-weight:700; }
+  .sub { color:var(--muted); font-size:14px; margin:0 0 22px; }
+  form { display:flex; gap:8px; margin-bottom:10px; }
+  input[type=url] { flex:1; min-width:0; padding:11px 12px; border-radius:9px; border:1px solid var(--line);
+                    background:#0b0f14; color:var(--fg); font:inherit; font-size:14px; }
+  button { padding:11px 16px; border:0; border-radius:9px; cursor:pointer; font:inherit; font-weight:700;
+           background:linear-gradient(135deg,#1d9bf0,#0d8bf0); color:#fff; }
+  #status { color:var(--muted); font-size:14px; min-height:22px; margin:10px 0 18px; }
+  ol { list-style:none; margin:0; padding:0; }
+  li { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--blue);
+       border-radius:10px; padding:12px 14px; margin:0 0 10px; }
+  li.reply { margin-left:22px; border-left-color:#5a6a7a; }
+  .who { display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; margin-bottom:4px; }
+  .name { color:var(--blue); font-weight:700; font-size:14px; word-break:break-all; }
+  .when { color:var(--muted); font-size:12px; }
+  .text { white-space:pre-wrap; word-wrap:break-word; }
+  .text a { color:var(--blue); }
+  footer { margin-top:34px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
+  footer a { color:var(--blue); }
+  .note { color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <img src="../favicon.svg" alt="">
+  <h1>Read a comment thread</h1>
+</header>
+<p class="sub">
+  Comments on any web page, stored on public Nostr relays rather than on the site. Paste an address
+  to see what has been said about it — nothing to install.
+</p>
+
+<form id="f">
+  <input type="url" id="u" placeholder="https://example.com/article" required>
+  <button type="submit">Show thread</button>
+</form>
+
+<p id="status"></p>
+<ol id="thread"></ol>
+
+<footer>
+  <p>
+    This page queries relays straight from your browser: <span class="note">nos.lol, relay.damus.io,
+    relay.primal.net, nostr.oxtr.dev, nostr.mom, relay.nostr.net</span>. They see the address you
+    look up and your IP, as any server you contact does. Nothing is sent anywhere else, and there is
+    no server behind this page.
+  </p>
+  <p>
+    To write comments, and to see them on every page you visit, install the extension —
+    <a href="https://addons.mozilla.org/firefox/addon/nostrcomments/">Firefox</a> ·
+    <a href="https://chromewebstore.google.com/detail/nostrcomments/ebmgdpicceaencegknannfaljhbfgido">Chrome</a> ·
+    <a href="https://github.com/briskness-byte/NostrComments">source</a>
+  </p>
+</footer>
+
+</div>
+<script>
+// ---------------------------------------------------------------------------------------------
+// Copied verbatim from NostrComments-Chrome/content.js. Keep identical: a thread is filed under
+// the normalised URL, so any difference here means looking in the wrong place.
+const _TRACKING = new Set(['gclid','gbraid','wbraid','dclid','fbclid','msclkid','yclid','twclid','igshid','mc_eid','mc_cid','_ga','_gl','mkt_tok','ref_src','ref_url','si','spm','scm','vero_id','oly_anon_id','oly_enc_id','_openstat','wickedid']);
+function normalizeUrl(href) {
+    try {
+        const u = new URL(href);
+        const p = u.searchParams;
+        const del = [];
+        p.forEach((_v, k) => { const kl = k.toLowerCase(); if (_TRACKING.has(kl) || kl.startsWith('utm_') || kl.startsWith('ga_')) del.push(k); });
+        del.forEach(k => p.delete(k));
+        p.sort();
+        const qs = p.toString();
+        const hash = (u.hash.startsWith('#/') || u.hash.startsWith('#!')) ? u.hash : '';
+        return u.origin + u.pathname + (qs ? '?' + qs : '') + hash;
+    } catch(_) { return ''; }
+}
+function toBech32(hrp, hex) {
+    const CS = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
+    const GEN = [0x3b6a57b2,0x26508e6d,0x1ea119fa,0x3d4233dd,0x2a1462b3];
+    const pm = v => { let c=1; for (const d of v){const t=c>>25;c=(c&0x1ffffff)<<5^d;for(let i=0;i<5;i++)if((t>>i)&1)c^=GEN[i];} return c; };
+    const ex = h => [...h].map(c=>c.charCodeAt(0)>>5).concat(0,...[...h].map(c=>c.charCodeAt(0)&31));
+    const bytes = hex.match(/.{2}/g).map(b=>parseInt(b,16));
+    const w=[]; let acc=0,bits=0;
+    for(const b of bytes){acc=(acc<<8)|b;bits+=8;while(bits>=5){bits-=5;w.push((acc>>bits)&31);}}
+    if(bits)w.push((acc<<(5-bits))&31);
+    const chk=pm([...ex(hrp),...w,0,0,0,0,0,0])^1;
+    return hrp+'1'+[...w,...Array.from({length:6},(_,i)=>(chk>>(5*(5-i)))&31)].map(d=>CS[d]).join('');
+}
+// ---------------------------------------------------------------------------------------------
+
+const RELAYS = ['wss://nos.lol','wss://relay.damus.io','wss://relay.primal.net',
+                'wss://nostr.oxtr.dev','wss://nostr.mom','wss://relay.nostr.net'];
+
+const $ = id => document.getElementById(id);
+const status = msg => { $('status').textContent = msg; };
+
+// Ask every relay in parallel and keep the union. No single relay has the whole thread — that is
+// the entire point of there being several — so a page that asked only one would under-report and
+// look broken in a way nobody could diagnose.
+function ask(relay, filters, ms = 6000) {
+    return new Promise(resolve => {
+        const out = [];
+        let ws, settle = () => { settle = () => {}; try { ws.close(); } catch (e) {} resolve(out); };
+        const timer = setTimeout(settle, ms);
+        try { ws = new WebSocket(relay); } catch (e) { clearTimeout(timer); return settle(); }
+        let open = filters.length;
+        ws.onopen = () => filters.forEach((f, i) => ws.send(JSON.stringify(['REQ', 'q' + i, f])));
+        ws.onerror = () => { clearTimeout(timer); settle(); };
+        ws.onmessage = m => {
+            let f; try { f = JSON.parse(m.data); } catch (e) { return; }
+            if (f[0] === 'EVENT') out.push(f[2]);
+            if (f[0] === 'EOSE' && --open <= 0) { clearTimeout(timer); settle(); }
+        };
+    });
+}
+
+const when = ts => {
+    const s = Math.floor(Date.now() / 1000) - ts;
+    if (s < 60) return 'just now';
+    if (s < 3600) return Math.floor(s / 60) + 'm ago';
+    if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+    if (s < 86400 * 30) return Math.floor(s / 86400) + 'd ago';
+    return new Date(ts * 1000).toLocaleDateString();
+};
+
+// Text arrives from strangers, so it is never handled as markup: every part becomes a text node,
+// and a link becomes an anchor built by hand. Only http and https, and never with the referrer.
+function renderText(el, text) {
+    const parts = String(text).split(/(https?:\/\/[^\s<>"']+)/g);
+    for (const part of parts) {
+        if (/^https?:\/\//.test(part)) {
+            const a = document.createElement('a');
+            a.href = part;
+            a.textContent = part;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer nofollow';
+            a.referrerPolicy = 'no-referrer';
+            el.appendChild(a);
+        } else if (part) {
+            el.appendChild(document.createTextNode(part));
+        }
+    }
+}
+
+async function show(raw) {
+    const url = normalizeUrl(raw);
+    if (!url) return status('That does not look like a web address.');
+    history.replaceState(null, '', location.pathname + '?url=' + encodeURIComponent(url));
+    $('thread').textContent = '';
+    status('Asking ' + RELAYS.length + ' relays…');
+
+    // NIP-22: the extension files a comment under an uppercase I (the root scope) and repeats it
+    // lowercase for a top-level comment. Both are asked for; duplicates are dropped by id.
+    const filters = [
+        { kinds: [1111], '#I': [url], limit: 200 },
+        { kinds: [1111], '#i': [url], limit: 200 },
+    ];
+    const seen = new Map();
+    await Promise.all(RELAYS.map(r => ask(r, filters).then(evs => evs.forEach(e => seen.set(e.id, e)))));
+
+    const events = [...seen.values()].sort((a, b) => a.created_at - b.created_at);
+    if (!events.length) {
+        return status('No comments on that page yet — or none that these relays hold.');
+    }
+
+    // Names, if the authors published any. Missing is normal, and an npub is shown instead.
+    const names = new Map();
+    const authors = [...new Set(events.map(e => e.pubkey))];
+    await Promise.all(RELAYS.slice(0, 3).map(r => ask(r, [{ kinds: [0], authors, limit: authors.length }])
+        .then(evs => evs.forEach(e => {
+            try {
+                const c = JSON.parse(e.content || '{}');
+                const n = c.display_name || c.name;
+                if (n && !names.has(e.pubkey)) names.set(e.pubkey, String(n).slice(0, 40));
+            } catch (_) {}
+        }))));
+
+    const ids = new Set(events.map(e => e.id));
+    for (const ev of events) {
+        const li = document.createElement('li');
+        // A comment answering another comment in this thread is shown indented. Anything else is
+        // top level, including replies to something these relays did not return.
+        const parent = (ev.tags || []).find(t => t[0] === 'e' && ids.has(t[1]));
+        if (parent) li.className = 'reply';
+
+        const who = document.createElement('div');
+        who.className = 'who';
+        const name = document.createElement('span');
+        name.className = 'name';
+        name.textContent = names.get(ev.pubkey) || (toBech32('npub', ev.pubkey).slice(0, 16) + '…');
+        const time = document.createElement('span');
+        time.className = 'when';
+        time.textContent = when(ev.created_at);
+        who.append(name, time);
+
+        const body = document.createElement('div');
+        body.className = 'text';
+        renderText(body, ev.content || '');
+
+        li.append(who, body);
+        $('thread').appendChild(li);
+    }
+    status(events.length + (events.length === 1 ? ' comment' : ' comments') + ' on ' + url);
+}
+
+$('f').onsubmit = e => { e.preventDefault(); show($('u').value); };
+
+const fromQuery = new URLSearchParams(location.search).get('url');
+if (fromQuery) { $('u').value = fromQuery; show(fromQuery); }
+</script>
+</body>
+</html>
