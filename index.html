@@ -223,6 +223,42 @@ footer a{margin:0 9px; display:inline-block}
 </section>
 
 <section>
+  <h2>Which signer to use</h2>
+
+  <p>
+    NostrComments works with any NIP-07 signer, and much of what makes that possible is owed to two
+    people. <a href="https://github.com/fiatjaf/nos2x">nos2x</a> by fiatjaf is the signer most of
+    us started with, and NIP-07 itself grew out of it. Diego Gurpegui brought it to Firefox as
+    <a href="https://github.com/diegogurpegui/nos2x-fox">nos2x-fox</a> and has looked after it
+    since. Thank you, both.
+  </p>
+
+  <ul>
+    <li><strong>Chrome:</strong>
+        <a href="https://chromewebstore.google.com/detail/nos2x/kpgefcfmnafjgpblomihpgmejjdanjjp">nos2x</a>.</li>
+    <li><strong>Firefox:</strong>
+        <a href="https://addons.mozilla.org/en-US/firefox/addon/nos2x-fox/">nos2x-fox</a>, or
+        <a href="https://github.com/briskness-byte/attest">Attest</a>
+        (<a href="/attest/attest-1.27.2.xpi">install 1.27.2</a>).</li>
+  </ul>
+
+  <p>
+    Attest is my fork of nos2x-fox, and almost all of its code is Diego's. I made it because of how
+    NostrComments behaves: it asks the signer on every page you read. nos2x-fox remembers when you
+    approve a site, but not when you refuse one, so if you say no you will be asked again on the next
+    page. Attest can remember a refusal for a while, and undo it later. It also authorizes everything
+    a site needs in one click rather than one prompt per capability, and has a single switch to stop
+    it answering anything. With NostrComments, that likely means far fewer prompts.
+  </p>
+
+  <p>
+    That frustration is partly on NostrComments, not nos2x-fox, and I am looking at making it back
+    off on its own. The changes in Attest were offered upstream too. I maintain it, so I am biased —
+    use whichever you like. NostrComments works the same with either.
+  </p>
+</section>
+
+<section>
   <h2>Support</h2>
 
   <p>
