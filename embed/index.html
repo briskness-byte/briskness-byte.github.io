@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Show the NostrComments thread under your articles</title>
+<meta name="description" content="A read-only comment box for your site: your readers see the NostrComments thread for each page without installing anything.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<!--
+  Instructions for site owners, and a live example of the box at the bottom. The example is the
+  snippet exactly as offered below — tests/run.mjs checks that the copy shown, the copy that runs
+  and the hash in this page's policy and in the instructions are all the same.
+-->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-i6TN3gFtTYCxpEasTVVhwWchAHlJrNO83H6Aw/7Hjpg='; style-src 'self'; img-src 'self'; frame-src 'self'; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="page.css">
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a href="/"><img src="/favicon.svg" alt="NostrComments" width="56" height="56"></a>
+  <h1>Show the comment thread under your articles</h1>
+  <p class="lead">NostrComments is a browser extension that adds a comment thread to any web page, stored on public Nostr relays rather than on the site. This box lets the readers of your site read that thread under each article, without installing anything. To write a comment, they install the extension.</p>
+</header>
+
+<section>
+  <h2>Before you add it</h2>
+  <ul>
+    <li><strong>It is read-only.</strong> The box shows the thread. Nobody can post from your site, and nothing is loaded until a reader asks for it.</li>
+    <li><strong>You cannot moderate it.</strong> The comments are not stored on your site or on this one. You cannot remove or hide a comment from the box, and neither can we: anything anyone writes about your page can appear under it. The box follows the extension's rules and nothing more: comments deleted by their own authors are left out, comments with many down-votes are collapsed, and a run of near-identical comments from one key is folded into one. If that is not acceptable for your site, please do not add the box.</li>
+    <li><strong>Abuse.</strong> If you or your readers find illegal content or abuse in a thread, <a href="https://github.com/briskness-byte/NostrComments/blob/main/ABUSE.md">ABUSE.md</a> explains what can and cannot be done about it, and who to contact.</li>
+    <li><strong>What you can tell your readers.</strong> You, the site owner, cannot remove a comment, and no single party can remove every copy. That cuts both ways: it is why a site cannot quietly delete criticism, and why nobody can take an abusive comment down everywhere at once. A relay can still drop a comment, and its author can ask for it to be deleted.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>What your readers' browsers send</h2>
+  <p>Nothing loads until a reader presses <em>Show comments from Nostr</em>. Until then the snippet is a button on your page and contacts nobody.</p>
+  <p>When a reader presses it, their browser:</p>
+  <ol>
+    <li>loads the box from <code>briskness-byte.github.io</code>, which is hosted by GitHub. GitHub sees the reader's IP address and that some page shows the box, but not which page: the address is passed after the <code>#</code> in the box's link, and browsers never send that part to a server.</li>
+    <li>connects to six public Nostr relays — <code>nos.lol</code>, <code>relay.damus.io</code>, <code>relay.primal.net</code>, <code>nostr.oxtr.dev</code>, <code>nostr.mom</code> and <code>relay.nostr.net</code>. Each of them sees the reader's IP address and the address of your page, as any server a browser connects to would.</li>
+  </ol>
+  <p>There are no cookies, no analytics and no tracking of any kind, and nothing is sent anywhere else. No pictures or avatars are loaded. The box cannot see your page, and your page cannot see into the box.</p>
+  <p>Please tell your readers. A line you could add to your privacy policy:</p>
+  <blockquote>Comments under our articles are loaded from public Nostr relays, but only when you press “Show comments from Nostr”. Your browser then connects to those relays and to GitHub, which see your IP address; the relays also see the address of the page. We do not store or control these comments.</blockquote>
+</section>
+
+<section>
+  <h2>Add it</h2>
+  <p>Paste this where the comments should appear, in the template of your article pages:</p>
+  <div class="code">
+<pre id="snippet">&lt;div data-nostrcomments&gt;&lt;/div&gt;
+&lt;script&gt;
+(function (box) {
+  // NostrComments comment box: https://briskness-byte.github.io/embed/
+  // Until the button is pressed, nothing is loaded and no server is contacted.
+  var button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = 'Show comments from Nostr';
+  box.appendChild(button);
+  button.onclick = function () {
+    var canonical = document.querySelector('link[rel~="canonical"]');
+    var params = new URLSearchParams({ url: box.getAttribute('data-url') || location.href });
+    if (canonical &amp;&amp; canonical.getAttribute('href')) params.set('alt', canonical.getAttribute('href'));
+    if (box.getAttribute('data-theme')) params.set('theme', box.getAttribute('data-theme'));
+    var frame = document.createElement('iframe');
+    frame.src = 'https://briskness-byte.github.io/embed/frame.html#' + params;
+    frame.title = 'Comments from Nostr';
+    frame.setAttribute('sandbox', 'allow-scripts allow-popups allow-popups-to-escape-sandbox');
+    frame.setAttribute('referrerpolicy', 'no-referrer');
+    frame.style.cssText = 'display:block;width:100%;height:180px;border:0';
+    window.addEventListener('message', function (e) {
+      if (e.source !== frame.contentWindow || !e.data || e.data.nostrcomments !== 'height') return;
+      frame.style.height = Math.min(Math.max(Number(e.data.height) || 0, 80), 20000) + 'px';
+    });
+    box.replaceChild(frame, button);
+  };
+})(document.currentScript.previousElementSibling);
+&lt;/script&gt;</pre>
+    <button type="button" id="copy">Copy</button>
+  </div>
+  <ul>
+    <li>The box finds the page's address the same way the extension does: the address in the browser, plus the page's canonical link if it has one. Tracking parameters such as <code>utm_source</code> are left out, so every reader lands in the same thread as people using the extension.</li>
+    <li>To show the thread of a particular address instead, add it to the first line: <code>&lt;div data-nostrcomments data-url="https://example.com/article"&gt;&lt;/div&gt;</code></li>
+    <li>The box is light or dark following the reader's system. To fix it, add <code>data-theme="light"</code> or <code>data-theme="dark"</code> to the same line.</li>
+    <li>If your site sends a Content-Security-Policy, allow the snippet and the box: add <code class="hash">'sha256-i6TN3gFtTYCxpEasTVVhwWchAHlJrNO83H6Aw/7Hjpg='</code> to <code>script-src</code>, and <code>https://briskness-byte.github.io</code> to <code>frame-src</code>. The hash only matches the snippet exactly as above.</li>
+    <li>Some site builders strip scripts out of posts. Put the snippet in the article template instead.</li>
+    <li>The box shows up to 50 comments. A link at the bottom opens the full thread.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Try it</h2>
+  <p>This is the snippet above, showing the thread of this site's front page.</p>
+<div data-nostrcomments data-url="https://briskness-byte.github.io/"></div>
+<script>
+(function (box) {
+  // NostrComments comment box: https://briskness-byte.github.io/embed/
+  // Until the button is pressed, nothing is loaded and no server is contacted.
+  var button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = 'Show comments from Nostr';
+  box.appendChild(button);
+  button.onclick = function () {
+    var canonical = document.querySelector('link[rel~="canonical"]');
+    var params = new URLSearchParams({ url: box.getAttribute('data-url') || location.href });
+    if (canonical && canonical.getAttribute('href')) params.set('alt', canonical.getAttribute('href'));
+    if (box.getAttribute('data-theme')) params.set('theme', box.getAttribute('data-theme'));
+    var frame = document.createElement('iframe');
+    frame.src = 'https://briskness-byte.github.io/embed/frame.html#' + params;
+    frame.title = 'Comments from Nostr';
+    frame.setAttribute('sandbox', 'allow-scripts allow-popups allow-popups-to-escape-sandbox');
+    frame.setAttribute('referrerpolicy', 'no-referrer');
+    frame.style.cssText = 'display:block;width:100%;height:180px;border:0';
+    window.addEventListener('message', function (e) {
+      if (e.source !== frame.contentWindow || !e.data || e.data.nostrcomments !== 'height') return;
+      frame.style.height = Math.min(Math.max(Number(e.data.height) || 0, 80), 20000) + 'px';
+    });
+    box.replaceChild(frame, button);
+  };
+})(document.currentScript.previousElementSibling);
+</script>
+</section>
+
+<section>
+  <h2>You can check all of this</h2>
+  <p>The box is a static page with no server behind it. Every comment, vote and name is shown only after its signature has been checked in the reader's browser, and the reading rules are copied from the extension, with a check that fails when the two drift apart. The source is <a href="https://github.com/briskness-byte/briskness-byte.github.io">here</a>, and the extension's is <a href="https://github.com/briskness-byte/NostrComments">here</a>.</p>
+</section>
+
+<footer>
+  <a href="/">NostrComments</a> · <a href="/thread/">Read a thread</a> · <a href="https://github.com/briskness-byte/NostrComments/blob/main/ABUSE.md">ABUSE.md</a>
+</footer>
+
+</div>
+<script src="page.js"></script>
+</body>
+</html>

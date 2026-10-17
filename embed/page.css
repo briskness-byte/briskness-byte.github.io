@@ -1,0 +1,30 @@
+/* The instructions page for site owners: the landing page's look, in a file of its own because the
+   page's Content-Security-Policy allows no inline style. */
+:root{ --bg:#ffffff; --fg:#14171a; --muted:#5b6570; --line:#e3e7ea; --card:#f7f9fa; --brand:#0c75bc; }
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f1216; --fg:#e8eaed; --muted:#a3adb8; --line:#252b33; --card:#161b21; --brand:#3b82f6; }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{ margin:0; background:var(--bg); color:var(--fg);
+      font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+.wrap{max-width:760px; margin:0 auto; padding:0 22px 60px}
+a{color:var(--brand)}
+header{padding:56px 0 8px}
+header img{display:block; margin-bottom:18px}
+h1{font-size:2rem; line-height:1.2; margin:0 0 14px; letter-spacing:-.01em}
+.lead{font-size:1.08rem; color:var(--muted)}
+section{padding:34px 0 8px; border-top:1px solid var(--line); margin-top:34px}
+h2{font-size:1.3rem; margin:0 0 14px}
+li{margin-bottom:10px}
+blockquote{margin:0 0 18px; padding:12px 16px; background:var(--card); border-left:3px solid var(--brand); border-radius:6px}
+code{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.88em;
+      background:var(--card); border:1px solid var(--line); border-radius:5px; padding:1px 5px; overflow-wrap:anywhere; }
+.code{position:relative; margin:0 0 18px}
+pre{ margin:0; padding:14px 16px; background:var(--card); border:1px solid var(--line); border-radius:9px;
+     overflow-x:auto; font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+#copy{ position:absolute; top:8px; right:8px; padding:6px 12px; border-radius:7px; border:1px solid var(--brand);
+       background:var(--bg); color:var(--brand); font:inherit; font-size:.85rem; font-weight:600; cursor:pointer; }
+[data-nostrcomments] > button{ padding:11px 18px; border-radius:9px; border:1px solid var(--brand);
+       background:var(--brand); color:#fff; font:inherit; font-weight:600; cursor:pointer; }
+footer{margin-top:40px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:.92rem}

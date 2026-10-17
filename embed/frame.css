@@ -1,0 +1,47 @@
+/* The comment box. It sits in somebody else's page, so it is quiet: system font, one accent colour,
+   its own background so it stays readable whatever the page behind it looks like. Light or dark
+   follows the reader's system unless the site set data-theme on the snippet. */
+:root {
+  --bg:#ffffff; --panel:#f6f8fa; --line:#e1e5e9; --fg:#1b1f23; --muted:#5b6570; --accent:#0c6fb0;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) { --bg:#11151a; --panel:#181d24; --line:#262d36; --fg:#e7e9ea; --muted:#9aa7b4; --accent:#58a6ff; color-scheme: dark; }
+}
+:root.dark { --bg:#11151a; --panel:#181d24; --line:#262d36; --fg:#e7e9ea; --muted:#9aa7b4; --accent:#58a6ff; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html, body { margin:0; background:var(--bg); color:var(--fg); }
+body { font:15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+       padding:14px 14px 10px; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+a { color:var(--accent); }
+
+header { margin-bottom:10px; }
+.title { font-weight:700; }
+#status { color:var(--muted); font-size:14px; }
+
+ol { list-style:none; margin:0; padding:0; }
+li { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--accent);
+     border-radius:8px; padding:9px 12px; margin:0 0 8px; }
+li.reply { margin-left:18px; border-left-color:var(--muted); }
+li.d2 { margin-left:36px; } li.d3 { margin-left:54px; } li.d4 { margin-left:72px; }
+li.d5 { margin-left:90px; } li.d6 { margin-left:108px; }
+li.tomb, li.fold { font-style:italic; color:var(--muted); border-left-color:var(--line); }
+
+.who { display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; margin-bottom:2px; }
+.name { font-weight:700; font-size:14px; word-break:break-word; }
+.npub { color:var(--muted); font-size:12px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.when { color:var(--muted); font-size:12px; }
+.tag { color:var(--muted); font-size:11px; border:1px solid var(--line); border-radius:6px; padding:0 6px; }
+.text { white-space:pre-wrap; overflow-wrap:anywhere; }
+/* Names and text come from strangers: right-to-left override characters must not be able to
+   reorder what is drawn around them, such as the key beside a name. */
+.name, .npub, .text { unicode-bidi:isolate; }
+
+.opener { background:none; border:0; padding:0; color:var(--accent); font:inherit; font-style:italic; cursor:pointer; }
+.opener:hover { text-decoration:underline; }
+.opener:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+
+footer { margin-top:10px; font-size:13px; color:var(--muted); }
+footer p { margin:4px 0; }
+.links a { font-weight:600; }

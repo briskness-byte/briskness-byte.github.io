@@ -40,3 +40,11 @@ files because the Content-Security-Policy allows nothing inline.
 The reading rules are copied from the extension's content.js, block by block, between
 `// content.js: <name>` markers in lib/read.js. When check.mjs reports a block as changed, copy
 the new lines from content.js into that block and run both checks again.
+
+## The embed
+
+`/embed/` tells site owners how to put the thread under their articles, and runs the snippet as a
+live example. The snippet is inline and fixed: a button that, when pressed, opens a sandboxed
+iframe on `/embed/frame.html` with the page address in the fragment. The frame uses the same
+`lib/read.js` and `lib/draw.js` as `/thread/`. The snippet's CSP hash is given on the page;
+`tests/run.mjs` fails if the snippet shown, the snippet that runs and that hash ever differ.

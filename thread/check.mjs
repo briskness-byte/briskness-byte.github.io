@@ -30,7 +30,7 @@ const ok = (cond, what) => { console.log((cond ? '✓ ' : '✗ ') + what); if (!
 
 const EXPECTED = ['normalizeUrl', 'toBech32', 'secp', 'verifyEvent', 'limits', 'kinds', 'pageFilters',
     'profileAt', 'deletions', 'recount', 'shape', 'pageTag', 'deletionTargets', 'deletionApply',
-    'voteValue', 'voteApply', 'profile', 'render', 'fold', 'hitLimit'];
+    'voteValue', 'voteApply', 'profile', 'render', 'fold', 'hitLimit', 'altPageUrls'];
 
 const EXT_DIR = path.resolve(HERE, '../../NostrComments');
 const CONTENT = path.join(EXT_DIR, 'NostrComments-Chrome/content.js');

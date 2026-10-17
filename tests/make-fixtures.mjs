@@ -71,5 +71,13 @@ await make('bobProfile', 'bob', { kind: 0, content: JSON.stringify({ display_nam
 await comment('forgedTarget', 'carol', 'One real down-vote and four forged ones.');
 await make('ft_v6', 'v6', { kind: 7, content: '-', tags: [['e', events.forgedTarget.id], ['r', PAGE]] });
 
-fs.writeFileSync(path.join(HERE, 'fixtures.json'), JSON.stringify({ PAGE, OTHER, pubkeys: Object.fromEntries(Object.keys(K).map(n => [n, pub(n)])), events }, null, 1) + '\n');
+// A busy page: sixty different comments from three keys, more than the embed shows.
+const BUSY = 'https://example.com/busy';
+for (let i = 0; i < 60; i++) {
+    const who = ['alice', 'bob', 'carol'][i % 3];
+    events['busy' + i] = await X.sign(K[who], { created_at: t++, kind: 1111, content: `Busy comment number ${i}, about point ${i * 7}.`,
+                                               tags: [['I', BUSY], ['K', 'web'], ['i', BUSY], ['k', 'web']] });
+}
+
+fs.writeFileSync(path.join(HERE, 'fixtures.json'), JSON.stringify({ PAGE, OTHER, BUSY, pubkeys: Object.fromEntries(Object.keys(K).map(n => [n, pub(n)])), events }, null, 1) + '\n');
 console.log(`wrote ${Object.keys(events).length} events to tests/fixtures.json`);

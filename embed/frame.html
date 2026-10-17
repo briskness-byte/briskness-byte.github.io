@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Comments from Nostr</title>
+<!--
+  The comment box a site places under its articles, inside a sandboxed iframe. It is only ever
+  loaded after a reader clicks the button the snippet puts on the page; see /embed/ for the
+  snippet and what it does.
+
+  The address of the page comes in the fragment (#url=…), which browsers never send to a server,
+  so GitHub serves this file without learning which page it is for. Reading, checking and drawing
+  are lib/read.js and lib/draw.js, the same code as /thread/.
+
+  The policy allows scripts and styles from this site only, and connections to the listed relays
+  only. It is not the sandbox that keeps comment text from running — a site can leave the sandbox
+  off — but this policy and the fact that text is never handled as markup.
+-->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src wss://nos.lol wss://relay.damus.io wss://relay.primal.net wss://nostr.oxtr.dev wss://nostr.mom wss://relay.nostr.net; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="frame.css">
+</head>
+<body>
+<header>
+  <span class="title">Comments from Nostr</span>
+  <span id="status" role="status"></span>
+</header>
+<ol id="thread"></ol>
+<footer>
+  <p class="links">
+    <a id="full" href="../thread/" target="_blank" rel="noopener noreferrer">Read the full thread</a>
+    <span aria-hidden="true">·</span>
+    <a href="../" target="_blank" rel="noopener noreferrer">Install NostrComments to join in</a>
+  </p>
+  <p class="about">
+    These comments are stored on public Nostr relays, not by this site, and the site owner cannot
+    remove them. The relays see your IP address and this page's address.
+  </p>
+</footer>
+<script src="../lib/read.js"></script>
+<script src="../lib/draw.js"></script>
+<script src="frame.js"></script>
+</body>
+</html>
