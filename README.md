@@ -25,3 +25,12 @@ within a minute or two.
 ## Before it goes up
 
 - The demo video block is commented out. Uncomment it once the video exists.
+
+## The thread reader
+
+`/thread/` reads a page's comment thread straight from the relays, in the visitor's browser. The
+reading code is in `lib/read.js`, shared with the embed; the page scripts and styles are separate
+files because the Content-Security-Policy allows nothing inline.
+
+    node tests/run.mjs        # offline: policy, no inline code, stranger text stays text
+    node thread/check.mjs     # online: drift from the extension, and a real thread still found
