@@ -32,5 +32,11 @@ within a minute or two.
 reading code is in `lib/read.js`, shared with the embed; the page scripts and styles are separate
 files because the Content-Security-Policy allows nothing inline.
 
-    node tests/run.mjs        # offline: policy, no inline code, stranger text stays text
-    node thread/check.mjs     # online: drift from the extension, and a real thread still found
+    node tests/run.mjs           # offline: policy, rendering, signatures, the reading rules
+    node thread/check.mjs        # drift from the extension (fails if any copied rule changed),
+                                 # then a real thread read from the real relays
+    node tests/make-fixtures.mjs # re-sign tests/fixtures.json; needs the extension repo next door
+
+The reading rules are copied from the extension's content.js, block by block, between
+`// content.js: <name>` markers in lib/read.js. When check.mjs reports a block as changed, copy
+the new lines from content.js into that block and run both checks again.

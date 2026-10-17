@@ -1,8 +1,8 @@
-// The /thread/ page: a form, a status line and a list. Reading, checking and rendering live in
-// ../lib/read.js, shared with the embed.
+// The /thread/ page: a form, a status line and a list. Reading, checking and the extension's rules
+// for what is shown live in ../lib/read.js, shared with the embed; this file only draws.
 (function () {
 'use strict';
-const { normalizeUrl, toBech32, RELAYS, ask, renderText } = window.NCRead;
+const { normalizeUrl, toBech32, RELAYS, readThread, renderText, canVerify } = window.NCRead;
 
 const $ = id => document.getElementById(id);
 const status = msg => { $('status').textContent = msg; };
@@ -16,65 +16,88 @@ const when = ts => {
     return new Date(ts * 1000).toLocaleDateString();
 };
 
+const el = (tag, cls, text) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+};
+
+// A placeholder item that is replaced by the real thing when its button is pressed. A button
+// rather than a clickable item, so it can be reached and pressed from the keyboard.
+function placeholder(cls, label, open) {
+    const li = el('li', cls);
+    const b = el('button', 'opener', label);
+    b.type = 'button';
+    b.onclick = () => li.replaceWith(open());
+    li.appendChild(b);
+    return li;
+}
+
+function drawComment(item, reveal) {
+    const { ev, sc, depth } = item;
+    const li = el('li', depth > 0 ? 'reply d' + Math.min(depth, 6) : '');
+    // Only reached for a deleted comment with replies under it. No name: the author asked for it
+    // to be gone, and what is left marks that something was here.
+    if (item.deleted) { li.classList.add('tomb'); li.textContent = 'Comment deleted by its author'; return li; }
+    if (item.hidden && !reveal) {
+        return placeholder(li.className + ' tomb', `Hidden (${sc.down} downvotes) — show`, () => drawComment(item, true));
+    }
+
+    const who = el('div', 'who');
+    // The name is whatever its owner chose, so it could say anything — "Site owner", or another
+    // person's name. The key it belongs to is always shown beside it.
+    const npub = toBech32('npub', ev.pubkey);
+    if (item.name) who.appendChild(el('span', 'name', String(item.name).slice(0, 40)));
+    who.appendChild(el('span', 'npub', npub.slice(0, 12) + '…' + npub.slice(-4)));
+    who.appendChild(el('span', 'when', when(ev.created_at)));
+    if (item.legacy) {
+        const tag = el('span', 'tag', 'note');
+        tag.title = 'An ordinary Nostr note that links to this page, rather than a comment written on it.';
+        who.appendChild(tag);
+    }
+
+    const body = el('div', 'text');
+    renderText(body, ev.content);
+    li.append(who, body);
+    return li;
+}
+
+function draw(view) {
+    const list = $('thread');
+    list.textContent = '';
+    if (view.capped) list.appendChild(el('li', 'tomb', `Showing the newest ${view.limit} comments — this thread has more than one request can carry.`));
+    for (const item of view.items) {
+        if (item.type === 'fold') {
+            list.appendChild(placeholder('fold', `and ${item.rest.length} more like this from the same key — show`, () => {
+                const frag = document.createDocumentFragment();
+                item.rest.forEach(r => frag.appendChild(drawComment(r)));
+                return frag;
+            }));
+        } else {
+            list.appendChild(drawComment(item));
+        }
+    }
+}
+
+let current = 0;
 async function show(raw) {
     const url = normalizeUrl(raw);
     if (!url) return status('That does not look like a web address.');
+    if (!canVerify()) return status('This page needs https to check signatures, so it shows nothing without it.');
     history.replaceState(null, '', location.pathname + '?url=' + encodeURIComponent(url));
     $('thread').textContent = '';
+    const run = ++current;
     status('Asking ' + RELAYS.length + ' relays…');
-
-    // NIP-22: the extension files a comment under an uppercase I (the root scope) and repeats it
-    // lowercase for a top-level comment. Both are asked for; duplicates are dropped by id.
-    const filters = [
-        { kinds: [1111], '#I': [url], limit: 200 },
-        { kinds: [1111], '#i': [url], limit: 200 },
-    ];
-    const seen = new Map();
-    await Promise.all(RELAYS.map(r => ask(r, filters).then(evs => evs.forEach(e => seen.set(e.id, e)))));
-
-    const events = [...seen.values()].sort((a, b) => a.created_at - b.created_at);
-    if (!events.length) {
-        return status('No comments on that page yet — or none that these relays hold.');
-    }
-
-    // Names, if the authors published any. Missing is normal, and an npub is shown instead.
-    const names = new Map();
-    const authors = [...new Set(events.map(e => e.pubkey))];
-    await Promise.all(RELAYS.slice(0, 3).map(r => ask(r, [{ kinds: [0], authors, limit: authors.length }])
-        .then(evs => evs.forEach(e => {
-            try {
-                const c = JSON.parse(e.content || '{}');
-                const n = c.display_name || c.name;
-                if (n && !names.has(e.pubkey)) names.set(e.pubkey, String(n).slice(0, 40));
-            } catch (_) {}
-        }))));
-
-    const ids = new Set(events.map(e => e.id));
-    for (const ev of events) {
-        const li = document.createElement('li');
-        // A comment answering another comment in this thread is shown indented. Anything else is
-        // top level, including replies to something these relays did not return.
-        const parent = (ev.tags || []).find(t => t[0] === 'e' && ids.has(t[1]));
-        if (parent) li.className = 'reply';
-
-        const who = document.createElement('div');
-        who.className = 'who';
-        const name = document.createElement('span');
-        name.className = 'name';
-        name.textContent = names.get(ev.pubkey) || (toBech32('npub', ev.pubkey).slice(0, 16) + '…');
-        const time = document.createElement('span');
-        time.className = 'when';
-        time.textContent = when(ev.created_at);
-        who.append(name, time);
-
-        const body = document.createElement('div');
-        body.className = 'text';
-        renderText(body, ev.content || '');
-
-        li.append(who, body);
-        $('thread').appendChild(li);
-    }
-    status(events.length + (events.length === 1 ? ' comment' : ' comments') + ' on ' + url);
+    await readThread(url, [], (view, done) => {
+        if (run !== current) return;
+        draw(view);
+        if (!view.items.length) return status(view.total
+            ? 'The comments on that page were deleted by their authors.'
+            : 'No comments on that page yet — or none that these relays hold.');
+        const n = view.count + (view.count === 1 ? ' comment' : ' comments');
+        status(done ? n + ' on ' + url : n + ' so far — checking votes and names…');
+    }, (i, total) => { if (run === current) status(`Checking signatures… ${i} of ${total}`); });
 }
 
 $('f').onsubmit = e => { e.preventDefault(); show($('u').value); };

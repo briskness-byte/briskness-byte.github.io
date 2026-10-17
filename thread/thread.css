@@ -29,3 +29,13 @@ li.reply { margin-left:22px; border-left-color:#5a6a7a; }
 footer { margin-top:34px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
 footer a { color:var(--blue); }
 .note { color:var(--muted); font-size:13px; }
+li.d2 { margin-left:44px; } li.d3 { margin-left:66px; } li.d4 { margin-left:88px; }
+li.d5 { margin-left:110px; } li.d6 { margin-left:132px; }
+li.tomb, li.fold { font-style:italic; color:var(--muted); border-left-color:var(--line); }
+.npub { color:var(--muted); font-size:12px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.tag { color:var(--muted); font-size:11px; border:1px solid var(--line); border-radius:6px; padding:0 6px; }
+.opener { background:none; border:0; padding:0; color:var(--blue); font:inherit; font-style:italic; cursor:pointer; font-weight:400; }
+.opener:hover { text-decoration:underline; }
+/* Names and text come from strangers: right-to-left override characters must not be able to
+   reorder what is drawn around them, such as the key beside a name. */
+.name, .npub, .text { unicode-bidi:isolate; }

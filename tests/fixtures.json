@@ -1,0 +1,907 @@
+{
+ "PAGE": "https://example.com/article",
+ "OTHER": "https://example.com/another-article",
+ "pubkeys": {
+  "alice": "a47a4a07911b2477f6fb6d24f9fb6b6e26127cfa05a40a790ad964646db3a2ff",
+  "bob": "1bc7eccf9f13a161119fec21607bb869c5f23e6fe368be02fc77412b11c70a2b",
+  "carol": "b133ebfc0921e7c4ba5ecb84300cb6e946667d53ee777291a02b0205ed951d15",
+  "spammer": "20310e71999509356296dc934a5fedd77a06bc9f385aa054ec8d2b90a06e39b9",
+  "mallory": "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b",
+  "v1": "d290b3314c11bcf6f0ad7b36784036267b9595ed53108383b572c486d529fa7c",
+  "v2": "0d4edcec682f0cbe2e1d6a2ec92719cd3563f2fb897877b412b9857f9597e85c",
+  "v3": "0bd688481b4f4e7b540ea5ab6abbe91cb9a1e6efb1125e52130497e95058523e",
+  "v4": "cb5676e238b3d347b014f25d75b486cb48b7fda3d8c1e68937cd21c6bca7aa62",
+  "v5": "415b416926ab8b17305d2b951a546a99dbecbf1995a233b733fbc899858b09e8",
+  "v6": "ebcea4b4b4da63e3a8ee4ceb96e5ea77b0cba404002288b7e9c2090b7420197c"
+ },
+ "events": {
+  "plain": {
+   "created_at": 1760000000,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "A plain comment on the article.",
+   "kind": 1111,
+   "pubkey": "a47a4a07911b2477f6fb6d24f9fb6b6e26127cfa05a40a790ad964646db3a2ff",
+   "id": "87446f63a5bff3e7a2b2bfbe42404829ff91f0d3ddf82f711d799cdc56119d72",
+   "sig": "d90890199f249f218da5acf9c703d26088eb5aad6a41334bfc2a9c527dbda180b2d9ebc892c4c38d02d55d2d9b51bfa7897175ed9e0ba8cf50c00e9e47fc5398"
+  },
+  "hostile": {
+   "created_at": 1760000001,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "<script>alert(1)</script><img src=x onerror=alert(1)> see https://example.org/x",
+   "kind": 1111,
+   "pubkey": "1bc7eccf9f13a161119fec21607bb869c5f23e6fe368be02fc77412b11c70a2b",
+   "id": "73d551e4defed916266ddee1c8d051b10aa81d24f63ad128cfb9ec1190b48ecc",
+   "sig": "cf191f3bd5e1f492e436265010c134fe98427d6a72f56a065c406ea58a86e90ee1064d05e0efd91a89c14cc11827e8a9baa7179a06830699c982c56ff9494253"
+  },
+  "lowercaseOnly": {
+   "created_at": 1760000002,
+   "tags": [
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "Only a lowercase i tag.",
+   "kind": 1111,
+   "pubkey": "b133ebfc0921e7c4ba5ecb84300cb6e946667d53ee777291a02b0205ed951d15",
+   "id": "9567ac096b51106b132feefdfa309c7ef6d51ac21d0cef4e6c9795c79a772f8b",
+   "sig": "77e7748850ddbde390bca94aa5b290dc7091b3f9e0d5d4e5e25953cae3631db7caa1639093c2f25c0b74bbc0824705c50a4a737a5c6d2c4cc539a13dd54527c3"
+  },
+  "otherPage": {
+   "created_at": 1760000003,
+   "tags": [
+    [
+     "I",
+     "https://example.com/another-article"
+    ],
+    [
+     "K",
+     "web"
+    ]
+   ],
+   "content": "About another page.",
+   "kind": 1111,
+   "pubkey": "b133ebfc0921e7c4ba5ecb84300cb6e946667d53ee777291a02b0205ed951d15",
+   "id": "0215bab7119bf36859653a207227fb5b71913d78ff452c4a083ffc7f9ef289db",
+   "sig": "3e96bc87bde3196ccc233229bdaee201066f74c47f8aa2843f9be8ee0cb6c2a12be690f1d139ff89dd8564f9c6a5e66a99d59b13fe2be69dec66f1cf87c90973"
+  },
+  "legacyNote": {
+   "created_at": 1760000004,
+   "tags": [
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "An ordinary note linking the article.",
+   "kind": 1,
+   "pubkey": "b133ebfc0921e7c4ba5ecb84300cb6e946667d53ee777291a02b0205ed951d15",
+   "id": "2ded6feffd7bee23a9b40a7bc384efdb57af040f8636cbc9617f270751629c86",
+   "sig": "66bae6cf568b84fabe307fd2266d76051d00a15bcd4276fa853d0121a9589b4ea4ccf0d270ac42ccbe91c98468b0158440ad8a70e5b69a2095e9e53d96108163"
+  },
+  "legacyNoTag": {
+   "created_at": 1760000005,
+   "tags": [],
+   "content": "A note with no r tag.",
+   "kind": 1,
+   "pubkey": "b133ebfc0921e7c4ba5ecb84300cb6e946667d53ee777291a02b0205ed951d15",
+   "id": "1d2ea761ba3987e6495b75eb14559cb05d87f053c304d2f89585d4565cfece9c",
+   "sig": "4771b62beaaf595f573c4e99eaa0515838da3ddcdc5c24f53f455206fe5eb7500d4e49ebc28b585c3f01d0a2fcaca31399801d76fada2701850e4d791a2895db"
+  },
+  "replyNoPageTag": {
+   "created_at": 1760000006,
+   "tags": [
+    [
+     "e",
+     "87446f63a5bff3e7a2b2bfbe42404829ff91f0d3ddf82f711d799cdc56119d72"
+    ],
+    [
+     "k",
+     "1111"
+    ]
+   ],
+   "content": "A reply found only by its parent.",
+   "kind": 1111,
+   "pubkey": "b133ebfc0921e7c4ba5ecb84300cb6e946667d53ee777291a02b0205ed951d15",
+   "id": "2b493d8f5b8f49a9f84f4b8bcdd4a4f7b55b1fc4eaaac4a90bd6c5a05ec4ddb3",
+   "sig": "ddb8446f725f40badbea9c0d3917a83b8abc534062cb1856a830c3d5bbf04945f49850705d203cb95fd0f38536612c5b5e265e04586a2da168894b3c5fd03daf"
+  },
+  "deletedByAuthor": {
+   "created_at": 1760000007,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "Alice will delete this.",
+   "kind": 1111,
+   "pubkey": "a47a4a07911b2477f6fb6d24f9fb6b6e26127cfa05a40a790ad964646db3a2ff",
+   "id": "1bf6ebc9b7b93dda184feed11d71d105b682c6bed64c2675654f621c7dbf9f7d",
+   "sig": "42b2dbba056fe15c49b5064703c5d2ac6c2c6a7fc045a575bafefd23f3a2a95894310e9079346a244380a4fae7b0bac3e5ce8e6e460d1f07280a2e6504b0b801"
+  },
+  "deleteByAuthor": {
+   "created_at": 1760000008,
+   "tags": [
+    [
+     "e",
+     "1bf6ebc9b7b93dda184feed11d71d105b682c6bed64c2675654f621c7dbf9f7d"
+    ],
+    [
+     "k",
+     "1111"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "",
+   "kind": 5,
+   "pubkey": "a47a4a07911b2477f6fb6d24f9fb6b6e26127cfa05a40a790ad964646db3a2ff",
+   "id": "d688f4a9a79bbab93fcf222b04fe1fc02b762c288619ec3ee28dbe97eb2affe1",
+   "sig": "1f5f0054854f5fd0dcc99845eff307be2a364bbbe1237826ec29ae77f062706d4e518ea24168f64b83cea62fc1d8450086741983be0a7c902635997a1d7f526a"
+  },
+  "deleteAttempted": {
+   "created_at": 1760000009,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "Mallory will try to delete this.",
+   "kind": 1111,
+   "pubkey": "1bc7eccf9f13a161119fec21607bb869c5f23e6fe368be02fc77412b11c70a2b",
+   "id": "da17041cd6da11291f2b2bf9887f1dc6f8fe902563774855130989dc3c00b7d5",
+   "sig": "3325bc7dca06217a4a9e68eb91786c6f9d5ac7e34a023fe1f7ead43226a965fb4b41147486948e66fef2f5fc832e9d790d579462b1f8a7f904591ed7cc8a63a3"
+  },
+  "deleteByOther": {
+   "created_at": 1760000010,
+   "tags": [
+    [
+     "e",
+     "da17041cd6da11291f2b2bf9887f1dc6f8fe902563774855130989dc3c00b7d5"
+    ],
+    [
+     "k",
+     "1111"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "",
+   "kind": 5,
+   "pubkey": "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b",
+   "id": "990f1b87cb972443ee5fcef5c6ffbcd0e9cf7dcfc49d1cdfa7383b36e6baf4a6",
+   "sig": "742bb839be255f2321224d2287052f536a27cfccbc48929c4b9cfdf986987e4b978176343be5cecfbb5b55947586a64a3db1ceb478c5de22991a55c05ef63569"
+  },
+  "deletedParent": {
+   "created_at": 1760000011,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "Bob will delete this, but somebody answered it.",
+   "kind": 1111,
+   "pubkey": "1bc7eccf9f13a161119fec21607bb869c5f23e6fe368be02fc77412b11c70a2b",
+   "id": "900568f88aa1e7787413474cfc7c4d0a533f6798c788bf2edd423e28d47cb273",
+   "sig": "6ca07a81be5f3db1de1aa967e3faccdd1963481ec10194f40e6c745766a8b1dbb991f353f223d50c94cc0318ec93a6ef134f2313e14601113b0652d3a70432d0"
+  },
+  "replyToDeleted": {
+   "created_at": 1760000012,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ],
+    [
+     "e",
+     "900568f88aa1e7787413474cfc7c4d0a533f6798c788bf2edd423e28d47cb273"
+    ]
+   ],
+   "content": "An answer to the deleted comment.",
+   "kind": 1111,
+   "pubkey": "b133ebfc0921e7c4ba5ecb84300cb6e946667d53ee777291a02b0205ed951d15",
+   "id": "3fff34c8cac82a76d14e192204d7ea41456d8fb9673d52157dac20c852305766",
+   "sig": "ae95251423c3a2fd17610d2b4f365e08843c09e8f178d3d2ab47b358b7cfdf3d6269f74c62a66db70398b5c1969eb9dae4057e50b672ab142d1e8219a3dada44"
+  },
+  "deleteParent": {
+   "created_at": 1760000013,
+   "tags": [
+    [
+     "e",
+     "900568f88aa1e7787413474cfc7c4d0a533f6798c788bf2edd423e28d47cb273"
+    ],
+    [
+     "k",
+     "1111"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "",
+   "kind": 5,
+   "pubkey": "1bc7eccf9f13a161119fec21607bb869c5f23e6fe368be02fc77412b11c70a2b",
+   "id": "743e02d5d4dc2cb0d7e771f9466064d967888b3c54453dc26685312d78249338",
+   "sig": "b4b0c406a6fefaaa474e377ccba02b1aff5a693115200b14d5c1f8d3e4732858ee9bce87e13e660d3f67cd4087d62f361283213e881d26a67b82b4835d3bfa7b"
+  },
+  "same1": {
+   "created_at": 1760000014,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "Buy now!! https://shop.example/a?c=1",
+   "kind": 1111,
+   "pubkey": "20310e71999509356296dc934a5fedd77a06bc9f385aa054ec8d2b90a06e39b9",
+   "id": "192b6bf13464916d3c4f5a7eb9721f46a5f45d819b404010380c00082fc898fa",
+   "sig": "a52e1a4c722ce237137182b6ad0bb1845407c108a1bd49cff6692dd9f6de6678c1de4470eef0344e5dd65e2d73d7e43851ea190c66671a313962533028e22a24"
+  },
+  "same2": {
+   "created_at": 1760000015,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "buy NOW https://shop.example/a?c=2",
+   "kind": 1111,
+   "pubkey": "20310e71999509356296dc934a5fedd77a06bc9f385aa054ec8d2b90a06e39b9",
+   "id": "aca72da05dbb3257c865084d689537e2aeeafbeb4214647404e8f2f7d04a9012",
+   "sig": "27381f02d62df2e10736f24c06a2b8813efb1757ff7d93e609d77a27a89465678ab7cac289ea7a5031302e77f436e046518ec4360a45cfd130f7a7275174d8dc"
+  },
+  "same3": {
+   "created_at": 1760000016,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "Buy now.",
+   "kind": 1111,
+   "pubkey": "20310e71999509356296dc934a5fedd77a06bc9f385aa054ec8d2b90a06e39b9",
+   "id": "8cb84ca5b05b76e2029aa5c12683234999cf8ad965ef884c250b8d410e373498",
+   "sig": "a2b196f8bab88a4c677c637965b754d225896ba6cb381ea0e71b290f916f00d96c9c25cc16f117d7dda2aec12221639aac9b68dcb3d9185e6bcb75c3ac51dfdc"
+  },
+  "pair1": {
+   "created_at": 1760000017,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "Thanks for this.",
+   "kind": 1111,
+   "pubkey": "b133ebfc0921e7c4ba5ecb84300cb6e946667d53ee777291a02b0205ed951d15",
+   "id": "3344c37f6994f5f9a20728bc35253a4e56b126baa26d3fc5996ba1f320532940",
+   "sig": "2858231d6d5ec330ed57920fccf537b1060299c1c18272b7a0a32478811993e0f17194a513697638790cfa8188c8f9e64ac19f2bfc59edfa4f903afe8637e195"
+  },
+  "pair2": {
+   "created_at": 1760000018,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "thanks for this!",
+   "kind": 1111,
+   "pubkey": "b133ebfc0921e7c4ba5ecb84300cb6e946667d53ee777291a02b0205ed951d15",
+   "id": "afb438e8eed81db774ce0d032f0428b805dc7b19d88712361ce5ac9271ce7e02",
+   "sig": "88f9de501fb2e1543a70d11e9b750658473d6373c1bd599667759242e2bd3498e8ecc7ed123b37a6321ec926ea4edebbcef02de10b9d67fe5043d6f8ff196068"
+  },
+  "downvoted": {
+   "created_at": 1760000019,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "Five people voted this down.",
+   "kind": 1111,
+   "pubkey": "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b",
+   "id": "a4d0476a5fcb27d88caadc6fc32abcd094c69bc174d4d35733310026f4dc68a1",
+   "sig": "84f7dad7b46e3cbebf8a967a79390f8b5a06b01b75bc3eff1f93c7d351c521ee50d4134fdcdaded5d471357e714b58bb27cc79c8b3797eced7b6a93e4883b684"
+  },
+  "fourDown": {
+   "created_at": 1760000020,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "Four people voted this down.",
+   "kind": 1111,
+   "pubkey": "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b",
+   "id": "014e9d77c0685694b6d54748a4bcd9e89a9277ac9e964f5b2f3408759429373b",
+   "sig": "173930168f665ea09ef891132f413afbca15d8d91ee9977ad3c9363db85851db983eccaa72e8e3e76508f0a25382315d651298b10ae87670987e572689b7440f"
+  },
+  "down_v1": {
+   "created_at": 1760000021,
+   "tags": [
+    [
+     "e",
+     "a4d0476a5fcb27d88caadc6fc32abcd094c69bc174d4d35733310026f4dc68a1"
+    ],
+    [
+     "p",
+     "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "d290b3314c11bcf6f0ad7b36784036267b9595ed53108383b572c486d529fa7c",
+   "id": "2582e30ad1b179a7185bd4436e885165872f003ea1626a1be067daaddcc206fa",
+   "sig": "de6b64ca17d36cefebc288883835cd9f32bd052ec0a2fb4d2ed0330cd7515541dec7bc5eb4c86a6f3856d88a76dcda3edb46451353e81c78844becf487b87b78"
+  },
+  "down_v2": {
+   "created_at": 1760000022,
+   "tags": [
+    [
+     "e",
+     "a4d0476a5fcb27d88caadc6fc32abcd094c69bc174d4d35733310026f4dc68a1"
+    ],
+    [
+     "p",
+     "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "0d4edcec682f0cbe2e1d6a2ec92719cd3563f2fb897877b412b9857f9597e85c",
+   "id": "de3de1831c81f096357471759ac1acd23aa8d1223c60e158a23ebd32b79a7cdb",
+   "sig": "7d4a1c58f1779ab12891ff6a34113fb0444aa85a8439c130e528f34ab99847c9ccadcd9b750731f958d877ef6a3b5ec6d7efcd37f5265a4ad2149926e9262bef"
+  },
+  "down_v3": {
+   "created_at": 1760000023,
+   "tags": [
+    [
+     "e",
+     "a4d0476a5fcb27d88caadc6fc32abcd094c69bc174d4d35733310026f4dc68a1"
+    ],
+    [
+     "p",
+     "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "0bd688481b4f4e7b540ea5ab6abbe91cb9a1e6efb1125e52130497e95058523e",
+   "id": "c1068fb20551f4f6c2cc9d9526dbcc81f093011b87d61e08efa5b15b369c05d4",
+   "sig": "d278249d7131c024dc26db211d746d26321cd81a68a7195af3f7161eb276f189044acca79278d6ba7933eb4ce831f15e28bfb445bdb2bb4358683e74eb26f850"
+  },
+  "down_v4": {
+   "created_at": 1760000024,
+   "tags": [
+    [
+     "e",
+     "a4d0476a5fcb27d88caadc6fc32abcd094c69bc174d4d35733310026f4dc68a1"
+    ],
+    [
+     "p",
+     "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "cb5676e238b3d347b014f25d75b486cb48b7fda3d8c1e68937cd21c6bca7aa62",
+   "id": "1e524d311f903d737e89b1674152fba0e6e0535e57b77a83604044ec773c07db",
+   "sig": "4a23226079e53eca9291385fad84b89999bbac54b174a6a45385a1779c692296a97515d5e533594d7c4cf58119f42043f56110c628e69a2afab3bb05b6667639"
+  },
+  "down_v5": {
+   "created_at": 1760000025,
+   "tags": [
+    [
+     "e",
+     "a4d0476a5fcb27d88caadc6fc32abcd094c69bc174d4d35733310026f4dc68a1"
+    ],
+    [
+     "p",
+     "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "415b416926ab8b17305d2b951a546a99dbecbf1995a233b733fbc899858b09e8",
+   "id": "aec9c7ff3591ee93db6ad770bd9082743e09cfa7f85df596609490280ea20434",
+   "sig": "50ea87c928fb2015709c844b54242840707f5f51441ce07a9665a390bdaec22384a3841dcdd1ef9eae99e2dd5c6d0e85b79d67372b8c9846fbe1e5dfa8012312"
+  },
+  "four_v1": {
+   "created_at": 1760000026,
+   "tags": [
+    [
+     "e",
+     "014e9d77c0685694b6d54748a4bcd9e89a9277ac9e964f5b2f3408759429373b"
+    ],
+    [
+     "p",
+     "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "d290b3314c11bcf6f0ad7b36784036267b9595ed53108383b572c486d529fa7c",
+   "id": "75af3c43b6124c4fac990d75f41cb76b5f0d7d211ce694f2990c152ca6dc62cb",
+   "sig": "e3a53dc9de76332656f9ddfd4158341b8c2acebe2ff336175d4b770f6b06a6d1e10edae68ec663756a2a454b42ca42ed1d4b4e95b831bd49066db07de4d89c97"
+  },
+  "four_v2": {
+   "created_at": 1760000027,
+   "tags": [
+    [
+     "e",
+     "014e9d77c0685694b6d54748a4bcd9e89a9277ac9e964f5b2f3408759429373b"
+    ],
+    [
+     "p",
+     "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "0d4edcec682f0cbe2e1d6a2ec92719cd3563f2fb897877b412b9857f9597e85c",
+   "id": "4d9def6509e8cd8843d1fcadabcfc56042c1b5d2301135010f3e3c6a1c307fc5",
+   "sig": "587e30779138b29bd8c7d2f015a65cf66def5ba5b3514283877043d88412bba4594593cee38af6418023921677842175d4aeb5e813e5f009e76b823613dcd028"
+  },
+  "four_v3": {
+   "created_at": 1760000028,
+   "tags": [
+    [
+     "e",
+     "014e9d77c0685694b6d54748a4bcd9e89a9277ac9e964f5b2f3408759429373b"
+    ],
+    [
+     "p",
+     "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "0bd688481b4f4e7b540ea5ab6abbe91cb9a1e6efb1125e52130497e95058523e",
+   "id": "7a60f9432fd85fcd94b42952f503557d04479f9170b2f856ce9c87a1b7a3cfe7",
+   "sig": "d2ebeade825d6584d95383135422c54db398cfa1ccec4a7c394b9f08432e174c62ed8609bcd9ea6c29bca19956cd79222b23b12d359acf6f12a4536c161ebd05"
+  },
+  "four_v4": {
+   "created_at": 1760000029,
+   "tags": [
+    [
+     "e",
+     "014e9d77c0685694b6d54748a4bcd9e89a9277ac9e964f5b2f3408759429373b"
+    ],
+    [
+     "p",
+     "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "cb5676e238b3d347b014f25d75b486cb48b7fda3d8c1e68937cd21c6bca7aa62",
+   "id": "3163f4ee2a28609191907c02e81463c60aaf29a8bbf41a57b3df79dc0578fef9",
+   "sig": "c1acedd5488a7799320f3f3022ffc3e66ee4a54b90789fba0c581c5cccceeeb07666065109b366c1468b89f357bb6fe27fbff3eddfeff6f3005c4c653d69e482"
+  },
+  "mindChanged": {
+   "created_at": 1760000030,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "Five down-votes, but one voter changed their mind.",
+   "kind": 1111,
+   "pubkey": "bc38e1554da8f31bda4b9d788fca7efba5f32e427cac817d3acced8ded8ca91b",
+   "id": "3ac1ccfc69283bb3f8dcad9eefe4b9b764c3b7875d142550213ac6b6e7619c94",
+   "sig": "810d2f1e7f232b25390e45080dc1e37b21d9d258c3d30414cb9b0ec15e5abe1fed5f99b372fb5fb16208043955869c0fb451c06b2ab0f0a01db9f0fbebef1e29"
+  },
+  "mc_v1": {
+   "created_at": 1760000031,
+   "tags": [
+    [
+     "e",
+     "3ac1ccfc69283bb3f8dcad9eefe4b9b764c3b7875d142550213ac6b6e7619c94"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "d290b3314c11bcf6f0ad7b36784036267b9595ed53108383b572c486d529fa7c",
+   "id": "281873f17f487ecaa2ceee5dec0d70dcc78fb8924339b70136fe38f79afd14a7",
+   "sig": "739ed37f431af30e5209353820f26d1ff68c6ef17914bbf61b62020a7aec580b2a5030df79aae7c5b4f5da7bbb62b1144df99b4d7d2a2eafe02e7a4c1506f458"
+  },
+  "mc_v2": {
+   "created_at": 1760000032,
+   "tags": [
+    [
+     "e",
+     "3ac1ccfc69283bb3f8dcad9eefe4b9b764c3b7875d142550213ac6b6e7619c94"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "0d4edcec682f0cbe2e1d6a2ec92719cd3563f2fb897877b412b9857f9597e85c",
+   "id": "e9288f342537b5c48082952dd21a4acd7d7a50ed609daa7fae2056a7ab47e3bb",
+   "sig": "2fbc766e838728f7a06d24b0c17686ce353f1b80def049bbaef8e7b2fb0c9c3f41bb180494ad79e38c62e1ceb0900839c9162fa28f5d9003371fb6c6607d28ca"
+  },
+  "mc_v3": {
+   "created_at": 1760000033,
+   "tags": [
+    [
+     "e",
+     "3ac1ccfc69283bb3f8dcad9eefe4b9b764c3b7875d142550213ac6b6e7619c94"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "0bd688481b4f4e7b540ea5ab6abbe91cb9a1e6efb1125e52130497e95058523e",
+   "id": "a438f1188004cface77b5ef1bd6ec5e0a0da8130555158e272c77b6c659fa45d",
+   "sig": "202f1c1cdedab1b4594adb06c7f89cfe4c1d7880a25ae71e73de963db47d9f78b3d7c1599d2a0e682cd96555d514e9a3c19c75bbe43060d59934877be8504e66"
+  },
+  "mc_v4": {
+   "created_at": 1760000034,
+   "tags": [
+    [
+     "e",
+     "3ac1ccfc69283bb3f8dcad9eefe4b9b764c3b7875d142550213ac6b6e7619c94"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "cb5676e238b3d347b014f25d75b486cb48b7fda3d8c1e68937cd21c6bca7aa62",
+   "id": "ff1957369de7240de2817b63ceef255653fedb0bfaf9307f6d679969e8051bbb",
+   "sig": "a1d7ab1dd5381ebd8e2125dd6a79a66cba6da034f8f2e6497a887e43f32039bb766c9373a9f70561d2fe2b94da26b17d8c7a71d8e7f08e209a0e1b281697450e"
+  },
+  "mc_v5": {
+   "created_at": 1760000035,
+   "tags": [
+    [
+     "e",
+     "3ac1ccfc69283bb3f8dcad9eefe4b9b764c3b7875d142550213ac6b6e7619c94"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "415b416926ab8b17305d2b951a546a99dbecbf1995a233b733fbc899858b09e8",
+   "id": "72926ebe7dd42f4299951fbc53be3739540d40ffb438a8c17321905d045a2e2a",
+   "sig": "98215ce2aa61ccaf5b680855c5ec277ea73af160e0f7f8eb3072c22fde62297956ed5dadef250cef9fa0ece9e2043ceefde7ad5205444b3e756c6e2a51173db2"
+  },
+  "mc_v5_up": {
+   "created_at": 1760000036,
+   "tags": [
+    [
+     "e",
+     "3ac1ccfc69283bb3f8dcad9eefe4b9b764c3b7875d142550213ac6b6e7619c94"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "+",
+   "kind": 7,
+   "pubkey": "415b416926ab8b17305d2b951a546a99dbecbf1995a233b733fbc899858b09e8",
+   "id": "f953180150d5e9ac3c813168533650c20e33d621f70d5d7035f5de0a2b488f9e",
+   "sig": "f7864418971835146014235cf963794ecd98154b198040ee1339387b68ab69c94167badff5df4768ba0f71e5aa73d37374a622a91fae81669549860f7e269a53"
+  },
+  "aliceOld": {
+   "created_at": 1760000037,
+   "tags": [],
+   "content": "{\"name\":\"alice-old\"}",
+   "kind": 0,
+   "pubkey": "a47a4a07911b2477f6fb6d24f9fb6b6e26127cfa05a40a790ad964646db3a2ff",
+   "id": "c5b138ca945ef4933a32991dc2b8083852a84162120d11c51a087f8bb8fb5080",
+   "sig": "38424d1328f3c0286aea661558e88b5f293b5fe3c59c1e1140c3d5e4d55a315ca4e817d58efe0bd247a74f6245ae88d28b705cc83e7c63fa1f8e72df72233d6c"
+  },
+  "aliceNew": {
+   "created_at": 1760000038,
+   "tags": [],
+   "content": "{\"name\":\"Alice\",\"display_name\":\"Alice D.\"}",
+   "kind": 0,
+   "pubkey": "a47a4a07911b2477f6fb6d24f9fb6b6e26127cfa05a40a790ad964646db3a2ff",
+   "id": "328ffb8c9b8de98e8c15cab510ba542205bd246d263f84d8937fbffc49a61699",
+   "sig": "cc7066e6eb6fde7840cbe8fc9905b7fce06322c7cef6c07387a17a8e5925bb6a92b9fafd6260b6c283b38e9c4a756fabfb69c8f7a8c3659664062a9144642aa1"
+  },
+  "bobProfile": {
+   "created_at": 1760000039,
+   "tags": [],
+   "content": "{\"display_name\":\"Bob <b>bold</b>\"}",
+   "kind": 0,
+   "pubkey": "1bc7eccf9f13a161119fec21607bb869c5f23e6fe368be02fc77412b11c70a2b",
+   "id": "baebaed22a91865e29de059f93474262d138241db98e4c94f11a428a373118d1",
+   "sig": "8ae60d7070946b68a2d4ae494376955076b86d0e684e1a67c18967a0f149207fd257162d12d97920d0651aa59bcb28b36a0786d8028a452a51c368ab9866b392"
+  },
+  "forgedTarget": {
+   "created_at": 1760000040,
+   "tags": [
+    [
+     "I",
+     "https://example.com/article"
+    ],
+    [
+     "K",
+     "web"
+    ],
+    [
+     "i",
+     "https://example.com/article"
+    ],
+    [
+     "k",
+     "web"
+    ]
+   ],
+   "content": "One real down-vote and four forged ones.",
+   "kind": 1111,
+   "pubkey": "b133ebfc0921e7c4ba5ecb84300cb6e946667d53ee777291a02b0205ed951d15",
+   "id": "e88aafe6a86672ced055c7b695ad73313a49ab4c846c8c183ebd8f39dac61ec7",
+   "sig": "d67fcafc9d99cfefabc1b7fd9e9044cb085f8d9001b997f0edc7df622233545ceb47ddbbde7f6e698773704d0d5a55a61e65a438e4d269fc258e3c07415ecc6c"
+  },
+  "ft_v6": {
+   "created_at": 1760000041,
+   "tags": [
+    [
+     "e",
+     "e88aafe6a86672ced055c7b695ad73313a49ab4c846c8c183ebd8f39dac61ec7"
+    ],
+    [
+     "r",
+     "https://example.com/article"
+    ]
+   ],
+   "content": "-",
+   "kind": 7,
+   "pubkey": "ebcea4b4b4da63e3a8ee4ceb96e5ea77b0cba404002288b7e9c2090b7420197c",
+   "id": "5f4b121bb42b8427205a7c4ce14651529f3a2d811b2270d2ebebfb91cfc96a14",
+   "sig": "4fc354bc4524e2119b2c2346db013d059d5cd353345327d7c141faffb0538312dca324a8c9ec512443a25eaa719d3001572d36b2a1c9274b96ddf07c2a1b5d1a"
+  }
+ }
+}
