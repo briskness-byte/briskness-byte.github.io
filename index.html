@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NostrComments — a comment thread on any page, that the page owner cannot delete</title>
-<meta name="description" content="A browser extension that attaches a comment thread to any URL. The comments live on Nostr relays instead of on the site being discussed, so the site cannot remove them.">
+<title>NostrComments — the comment section no website can close</title>
+<meta name="description" content="The comment section no website can close. A browser extension that puts a thread on every web page and keeps it on public Nostr relays, not on the site, so the site cannot remove it. No account, no server, no tracking.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.png" sizes="128x128" type="image/png">
 <link rel="apple-touch-icon" href="/favicon.png">
-<meta property="og:title" content="NostrComments">
-<meta property="og:description" content="A comment thread on any page, stored on Nostr relays rather than on the site being discussed.">
+<meta property="og:title" content="NostrComments — the comment section no website can close">
+<meta property="og:description" content="A thread on every web page, kept on Nostr relays, not on the site. No account, no server, no tracking.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://briskness-byte.github.io/">
 <meta property="og:image" content="https://briskness-byte.github.io/demo-poster.png">
@@ -41,7 +41,8 @@ a:hover{text-decoration:none}
 
 /* ---- header ------------------------------------------------------------ */
 header{text-align:center; padding:72px 0 8px}
-header img{width:88px; height:88px; border-radius:20px; display:block; margin:0 auto 22px}
+header img{width:72px; height:72px; border-radius:18px; display:block; margin:0 auto 14px}
+.brand{font-weight:700; font-size:1.05rem; color:var(--brand); margin:0 0 10px; letter-spacing:.01em}
 h1{font-size:2.5rem; line-height:1.15; margin:0 0 14px; letter-spacing:-.02em}
 .tagline{font-size:1.2rem; color:var(--muted); margin:0 auto; max-width:34em}
 
@@ -56,6 +57,7 @@ h1{font-size:2.5rem; line-height:1.15; margin:0 0 14px; letter-spacing:-.02em}
 .btn.alt{background:transparent; color:var(--brand)}
 .btn svg{width:19px; height:19px; flex:none}
 .note{text-align:center; color:var(--muted); font-size:.9rem; margin:16px 0 0}
+.shot{display:block; width:100%; height:auto; margin:40px 0 0; border-radius:13px; border:1px solid var(--line)}
 
 /* ---- sections ---------------------------------------------------------- */
 section{padding:52px 0; border-top:1px solid var(--line); margin-top:52px}
@@ -109,10 +111,11 @@ footer a{margin:0 9px; display:inline-block}
 
 <header>
   <img src="/favicon.svg" alt="">
-  <h1>NostrComments</h1>
+  <p class="brand">NostrComments</p>
+  <h1>The comment section no website can close</h1>
   <p class="tagline">
-    A comment thread on any page on the web — stored on Nostr relays rather than on the site being
-    discussed, so the site owner cannot delete it.
+    A thread on every web page, kept on public Nostr relays instead of on the site, so the site
+    cannot remove it. No account, no email, no tracking, and no server in between.
   </p>
 </header>
 
@@ -128,18 +131,34 @@ footer a{margin:0 9px; display:inline-block}
 </div>
 
 <p class="note">
-  Free and open source. No account, no sign-up, no server. The Chrome version also runs in Brave
-  and Edge.
+  Free and open source. The Chrome version also runs in Brave and Edge.<br>
+  Rather look first? <a href="/thread/">Read the thread on any page</a>, no install needed.
+  Run a site? <a href="/embed/">Show its thread under your articles</a>.
 </p>
 
-<p class="note">
-  Rather look first? <a href="/thread/">Read the thread on any page</a> — no install, no account.
-</p>
+<img class="shot" src="/screenshot.png" width="1280" height="800"
+     alt="The NostrComments panel open over a news article: a comment thread with votes, replies and zaps">
 
-<p class="note">
-  Run a site? <a href="/embed/">Show its thread under your articles</a> — your readers see the
-  comments without installing anything.
-</p>
+<section>
+  <h2>What it is for</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Warning the next visitor</h3>
+      <p>A shop that never delivered, a seller who vanished, an offer that is too good to be true.
+        One comment already helps the next person, even if nobody ever replies.</p>
+    </div>
+    <div class="card">
+      <h3>Discussing the news</h3>
+      <p>On the sites that closed their comment section, and on the stories where the comments
+        were switched off within a day.</p>
+    </div>
+    <div class="card">
+      <h3>Adding context</h3>
+      <p>To a company announcement, a government page or a press release, where the people who
+        published it are not the ones who decide what is said underneath.</p>
+    </div>
+  </div>
+</section>
 
 <section>
   <h2>What it looks like</h2>
@@ -228,7 +247,8 @@ footer a{margin:0 9px; display:inline-block}
 
   <ul>
     <li><a href="https://github.com/briskness-byte/NostrComments">The source</a>, all of it.</li>
-    <li><a href="https://github.com/briskness-byte/NostrComments/blob/main/docs/SECURITY-AUDIT-2026-08.md">A published security audit</a>
+    <li>Published security audits from <a href="https://github.com/briskness-byte/NostrComments/blob/main/docs/SECURITY-AUDIT-2026-08.md">August</a>
+        and <a href="https://github.com/briskness-byte/NostrComments/blob/main/docs/SECURITY-AUDIT-2026-10.md">October</a>
         — findings, fixes, and the things deliberately left alone, with the reasoning.</li>
     <li><a href="https://github.com/briskness-byte/NostrComments/blob/main/SECURITY.md">How to report a vulnerability</a>
         privately.</li>
