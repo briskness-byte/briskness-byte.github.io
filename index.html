@@ -207,24 +207,25 @@ footer a{margin:0 9px; display:inline-block}
 
   <div class="cards">
     <div class="card">
-      <h3>Nobody can delete it</h3>
+      <h3>The site cannot delete it</h3>
       <p>Comments are published to several independent relays. The site being discussed has no
         say in it, and neither does any single relay operator.</p>
     </div>
     <div class="card">
       <h3>Your identity is yours</h3>
       <p>A cryptographic key you own, held in your browser or in a <a href="#signer">signer
-        extension</a> you already use. It works on every other Nostr app too.</p>
+        extension</a> you already use, which is only asked when you open the comments. It works on
+        every other Nostr app too.</p>
     </div>
     <div class="card">
       <h3>Nothing in the middle</h3>
       <p>There is no server behind this. Your browser talks to the relays you choose, directly.
-        There is nothing else to trust, and nothing to breach.</p>
+        There is nothing else to trust, and no server of ours to breach.</p>
     </div>
     <div class="card">
       <h3>You decide what you see</h3>
-      <p>Nobody can delete a comment, but you can mute a person or a word for good, and a flood of
-        near-identical comments from one key folds into a single line.</p>
+      <p>You cannot remove other people's comments either, but you can mute a person or a word for
+        good, and a flood of near-identical comments from one key folds into a single line.</p>
     </div>
   </div>
 </section>
@@ -246,9 +247,11 @@ footer a{margin:0 9px; display:inline-block}
   </p>
 
   <p>
-    Two things narrow it. It applies only to pages you actually read — a tab you never look at, or a
-    page you leave within a couple of seconds, is never mentioned to anyone. And the relays are
-    yours: drop any you do not trust, or point the extension at one you run yourself.
+    Three things narrow it. It applies only to pages you actually read — a tab you never look at, or
+    a page you leave within a couple of seconds, is never mentioned to anyone. The relays are yours:
+    drop any you do not trust, or point the extension at one you run yourself. And there is a switch
+    in the toolbar button that turns it off on every page: nothing is shown, nothing connects, and
+    your signer is not asked for anything.
   </p>
 
   <p>
