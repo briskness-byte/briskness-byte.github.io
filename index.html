@@ -306,17 +306,19 @@ footer a{margin:0 9px; display:inline-block}
 
   <p>
     Attest is <a href="https://github.com/briskness-byte/attest">my fork</a> of nos2x-fox, and
-    almost all of its code is Diego's. I made it because of how NostrComments behaves: it asks the signer on every page you read. nos2x-fox remembers when you
-    approve a site, but not when you refuse one, so if you say no you will be asked again on the next
-    page. Attest can remember a refusal for a while, and undo it later. It also authorizes everything
-    a site needs in one click rather than one prompt per capability, and has a single switch to stop
-    it answering anything. With NostrComments, that likely means far fewer prompts.
+    almost all of its code is Diego's. It adds two kinds of things. It can sign through a remote
+    signer (NIP-46), so your key can stay in nsec.app, Amber or another bunker instead of in the
+    browser. And it is quieter: it can remember a refusal for a while and undo it later, authorize
+    everything a site needs in one click rather than one prompt per capability, and stop answering
+    anything with a single switch.
   </p>
 
   <p>
-    That frustration is partly on NostrComments, not nos2x-fox, and I am looking at making it back
-    off on its own. The changes in Attest were offered upstream too. I maintain it, so I am biased —
-    use whichever you like. NostrComments works the same with any of them.
+    NostrComments used to ask the signer on every page you read, which is what made those prompts
+    add up. Since 23.10.6 it asks only when you open the comments, so with any signer you are asked
+    only on sites where you actually read or write. Most of the changes in Attest were offered
+    upstream too. I maintain it, so I am biased — use whichever you like. NostrComments works the
+    same with any of them.
   </p>
 </section>
 
