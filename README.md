@@ -9,8 +9,15 @@ lookup on the web uses the hostname alone. awesome-nostr builds its icons from
 `https://<hostname>/favicon.ico`, so a project page would stay iconless. This way the same repo
 answers both.
 
-One hand-written file, no build step, no dependencies — the same claim the extension makes about
+Hand-written files, no build step, no dependencies — the same claim the extension makes about
 itself, so it had better be true here too.
+
+- `index.html` — the landing page, with `screenshot.png`, `demo.mp4` and `demo-poster.png`
+- `thread/` — the thread reader, for people without the extension
+- `embed/` — the comment box for site owners
+- `lib/` — the reading and drawing code shared by those two
+- `attest/` — the self-hosted Attest build and its Firefox update manifest
+- `tests/` — offline checks for the reader and the embed
 
 ## Setting it up
 
@@ -22,9 +29,11 @@ itself, so it had better be true here too.
 Then Settings → Pages → Source: `main` / root. It is live at https://briskness-byte.github.io/
 within a minute or two.
 
-## Before it goes up
+## Attest's update manifest
 
-- The demo video block is commented out. Uncomment it once the video exists.
+`attest/updates.json` is the `update_url` of self-hosted Attest builds; Firefox checks it for new
+versions. To ship one, add the `.xpi` here, add an entry with its version, link and
+`sha256:` hash, and remove the superseded file.
 
 ## The thread reader
 
