@@ -16,7 +16,6 @@ itself, so it had better be true here too.
 - `thread/` — the thread reader, for people without the extension
 - `embed/` — the comment box for site owners
 - `lib/` — the reading and drawing code shared by those two
-- `attest/` — the self-hosted Attest build and its Firefox update manifest
 - `tests/` — offline checks for the reader and the embed
 
 ## Setting it up
@@ -28,12 +27,6 @@ itself, so it had better be true here too.
 
 Then Settings → Pages → Source: `main` / root. It is live at https://briskness-byte.github.io/
 within a minute or two.
-
-## Attest's update manifest
-
-`attest/updates.json` is the `update_url` of self-hosted Attest builds; Firefox checks it for new
-versions. To ship one, add the `.xpi` here, add an entry with its version, link and
-`sha256:` hash, and remove the superseded file.
 
 ## The thread reader
 
