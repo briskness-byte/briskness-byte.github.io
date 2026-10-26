@@ -99,6 +99,26 @@ footer{
 }
 footer a{margin:0 9px; display:inline-block}
 
+/* ---- three ways in ----------------------------------------------------- */
+.ways{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); padding:36px 0 0}
+.way{background:var(--card); border:1px solid var(--line); border-radius:13px; padding:20px; display:flex; flex-direction:column}
+.way h2{font-size:1.05rem; margin:0 0 6px}
+.way p{margin:0 0 14px; color:var(--muted); font-size:.94rem; flex:1}
+.way .btn{padding:10px 14px; font-size:.95rem; justify-content:center}
+.way .btns{display:flex; gap:8px; flex-wrap:wrap}
+.way .btns .btn{flex:1}
+
+.cards.three{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+section.tight{padding:0; border-top:0; margin-top:40px}
+.quote{margin:0; padding:18px 22px; border-left:3px solid var(--brand); background:var(--brand-soft); border-radius:0 13px 13px 0}
+.quote p{margin:0 0 8px; font-size:1.05rem}
+.quote footer{border:0; margin:0; padding:0; text-align:left; font-size:.9rem}
+
+details{border-top:1px solid var(--line); padding:14px 0}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer; font-weight:600}
+details > :not(summary){margin-top:14px}
+
 @media (max-width:520px){
   header{padding-top:48px}
   h1{font-size:2rem}
@@ -116,34 +136,44 @@ footer a{margin:0 9px; display:inline-block}
   <p class="brand">NostrComments</p>
   <h1>The comment section no website can close</h1>
   <p class="tagline">
-    A thread on every web page, kept on public Nostr relays instead of on the site, so the site
-    cannot remove it. No account, no email, no tracking, and no server in between.
+    A thread on any web page, readable by anyone and removable by no one — kept on public Nostr
+    relays, not on the site. No account, no email, no tracking, no server in between.
   </p>
 </header>
 
-<div class="install">
-  <a class="btn" href="https://chromewebstore.google.com/detail/nostrcomments/ebmgdpicceaencegknannfaljhbfgido">
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 1 8.66 5H12a5 5 0 0 0-4.9 4.02L3.34 5.5A10 10 0 0 1 12 2zM2.4 7.3l3.77 6.53A5 5 0 0 0 12 17c.18 0 .35 0 .52-.03L9 22.74A10 10 0 0 1 2.4 7.3zm12.68 2.2h7.5A10 10 0 0 1 12 22h-.3l3.75-6.5a5 5 0 0 0-.37-6zM12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7z"/></svg>
-    Chrome
-  </a>
-  <a class="btn" href="https://addons.mozilla.org/en-US/firefox/addon/nostrcomments/">
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 1.8a8.2 8.2 0 0 1 7.3 4.5c-.6-1.1-1.6-1.7-2.7-1.6-1.7.2-2.3 1.6-4.1 1.9-2.3.4-4-1-5.6-.2C5.2 9.1 4.4 10.6 4.5 12A8.2 8.2 0 0 1 12 3.8zM5.1 14.4c.9 2.4 3 4.2 5.6 4.6 3.4.5 6.3-1.3 7.4-4 .6-1.6.4-3.3-.4-4.4.4 1.5-.2 2.9-1.3 3.6-1.5 1-3.3.6-4.4-.3.9-.1 1.7-.7 2-1.5-1.5.6-3.2.3-4.4-.7-1-.8-1.6-2-1.5-3.2-1.4 1.4-2 3.7-1.3 5.7z"/></svg>
-    Firefox
-  </a>
+<div class="ways">
+  <div class="way">
+    <h2>Comment</h2>
+    <p>Install the extension, and a button on every page opens its thread. Free and open source; the Chrome version also runs in Brave and Edge.</p>
+    <div class="btns">
+      <a class="btn" href="https://chromewebstore.google.com/detail/nostrcomments/ebmgdpicceaencegknannfaljhbfgido">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 1 8.66 5H12a5 5 0 0 0-4.9 4.02L3.34 5.5A10 10 0 0 1 12 2zM2.4 7.3l3.77 6.53A5 5 0 0 0 12 17c.18 0 .35 0 .52-.03L9 22.74A10 10 0 0 1 2.4 7.3zm12.68 2.2h7.5A10 10 0 0 1 12 22h-.3l3.75-6.5a5 5 0 0 0-.37-6zM12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7z"/></svg>
+        Chrome
+      </a>
+      <a class="btn" href="https://addons.mozilla.org/en-US/firefox/addon/nostrcomments/">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 1.8a8.2 8.2 0 0 1 7.3 4.5c-.6-1.1-1.6-1.7-2.7-1.6-1.7.2-2.3 1.6-4.1 1.9-2.3.4-4-1-5.6-.2C5.2 9.1 4.4 10.6 4.5 12A8.2 8.2 0 0 1 12 3.8zM5.1 14.4c.9 2.4 3 4.2 5.6 4.6 3.4.5 6.3-1.3 7.4-4 .6-1.6.4-3.3-.4-4.4.4 1.5-.2 2.9-1.3 3.6-1.5 1-3.3.6-4.4-.3.9-.1 1.7-.7 2-1.5-1.5.6-3.2.3-4.4-.7-1-.8-1.6-2-1.5-3.2-1.4 1.4-2 3.7-1.3 5.7z"/></svg>
+        Firefox
+      </a>
+    </div>
+  </div>
+  <div class="way">
+    <h2>Read</h2>
+    <p>Give the reader any address and see what has been said about that page, in any browser. Every comment's signature is checked. Nothing to install.</p>
+    <a class="btn alt" href="/thread/">Open the reader</a>
+  </div>
+  <div class="way">
+    <h2>Show it on your site</h2>
+    <p>One snippet puts each article's thread under it, for readers without the extension. Read-only, loads nothing until clicked, and not yours to moderate.</p>
+    <a class="btn alt" href="/embed/">Add the embed</a>
+  </div>
 </div>
-
-<p class="note">
-  Free and open source. The Chrome version also runs in Brave and Edge.<br>
-  Rather look first? <a href="/thread/">Read the thread on any page</a>, no install needed.
-  Run a site? <a href="/embed/">Show its thread under your articles</a>.
-</p>
 
 <img class="shot" src="/screenshot.png" width="1280" height="800"
      alt="The NostrComments panel open over a news article: a comment thread with votes, replies and zaps">
 
 <section>
   <h2>What it is for</h2>
-  <div class="cards">
+  <div class="cards three">
     <div class="card">
       <h3>Warning the next visitor</h3>
       <p>A shop that never delivered, a seller who vanished, an offer that is too good to be true.
@@ -162,27 +192,42 @@ footer a{margin:0 9px; display:inline-block}
   </div>
 </section>
 
+<section class="tight">
+  <blockquote class="quote">
+    <p>“It's so cool we no longer need to create profiles on the (broken in too many ways)
+      centralized platforms in order to just leave some review.”</p>
+    <footer>— codonaft, <a href="https://njump.me/nevent1qvzqqqqqqypzpm7zkmjefq8su4wvslrf4urtd5dpr739un4ftfpes7xyz7vu20qeqy88wumn8ghj7mn0wvhxcmmv9uq3wamnwvaz7tmjv4kxz7fwwpexjmtpdshxuet59uqzqqqqqd7zq2can7hd35fmhk3mfupj65ltx279njftlwhhwmrx998f9xkp6h">on Nostr</a></footer>
+  </blockquote>
+</section>
+
 <section>
-  <h2>No extension needed to read along</h2>
+  <h2>What sets it apart</h2>
   <div class="cards">
     <div class="card">
-      <h3>The reader</h3>
-      <p>Give it any address and see what has been said about that page. It queries the relays from
-        your own browser and checks every comment's signature. No install, no account.</p>
-      <p><a class="go" href="/thread/">Open the reader →</a></p>
+      <h3>The site has no say</h3>
+      <p>Comments are published to several independent relays, chosen by you. The site being
+        discussed cannot delete them, and neither can any single relay operator.</p>
     </div>
     <div class="card">
-      <h3>For site owners: the embed</h3>
-      <p>Paste one snippet into your article template and your readers see each page's thread
-        under the article, without installing anything. It is read-only, loads nothing until a
-        reader clicks, and you cannot moderate it — the page says so up front.</p>
-      <p><a class="go" href="/embed/">Add it to your site →</a></p>
+      <h3>Quiet until you open it</h3>
+      <p>Nothing is sent before you enable it, and then only for pages you actually read. Your
+        signer is asked only when you open the comments. One switch turns it all off.</p>
+    </div>
+    <div class="card">
+      <h3>Part of Nostr, not a silo</h3>
+      <p>Standard NIP-22 comments: what other Nostr apps write about a page shows here, and what you
+        write shows there. Your key works in every Nostr app.</p>
+    </div>
+    <div class="card">
+      <h3>You can check every claim</h3>
+      <p>No server, no build step: the file you install is the file in the repository. Two
+        published security audits, and a test suite that runs the shipped code.</p>
     </div>
   </div>
 </section>
 
 <section>
-  <h2>What it looks like</h2>
+  <h2>See it in 66 seconds</h2>
   <!-- Served from here rather than embedded from a video site: this page makes no request to
        anyone else, which is the same claim the extension makes about itself. preload="metadata"
        means nothing but the header is fetched until somebody presses play. -->
@@ -191,47 +236,16 @@ footer a{margin:0 9px; display:inline-block}
     <source src="/demo.mp4" type="video/mp4">
   </video>
   <p class="note">
-    Sixty-six seconds, with sound. Also on
-    <a href="https://www.youtube.com/watch?v=bywF8yWZa3o">YouTube</a> if you prefer it there.
+    With sound. Also on <a href="https://www.youtube.com/watch?v=bywF8yWZa3o">YouTube</a> if you
+    prefer it there.
   </p>
 </section>
 
 <section>
-  <h2>What it does</h2>
+  <h2>The details</h2>
 
-  <p class="lead">
-    Click the button in the corner of any page and a thread opens for that exact URL. Anyone else
-    with the extension sees the same thread. Nothing is asked of the site you are on, and nothing
-    is asked of you either — no account, no email, no password.
-  </p>
-
-  <div class="cards">
-    <div class="card">
-      <h3>The site cannot delete it</h3>
-      <p>Comments are published to several independent relays. The site being discussed has no
-        say in it, and neither does any single relay operator.</p>
-    </div>
-    <div class="card">
-      <h3>Your identity is yours</h3>
-      <p>A cryptographic key you own, held in your browser or in a <a href="#signer">signer
-        extension</a> you already use, which is only asked when you open the comments. It works on
-        every other Nostr app too.</p>
-    </div>
-    <div class="card">
-      <h3>Nothing in the middle</h3>
-      <p>There is no server behind this. Your browser talks to the relays you choose, directly.
-        There is nothing else to trust, and no server of ours to breach.</p>
-    </div>
-    <div class="card">
-      <h3>You decide what you see</h3>
-      <p>You cannot remove other people's comments either, but you can mute a person or a word for
-        good, and a flood of near-identical comments from one key folds into a single line.</p>
-    </div>
-  </div>
-</section>
-
-<section>
-  <h2>What the relays can see</h2>
+<details>
+  <summary>What the relays can see</summary>
 
   <p>
     There is no account, no telemetry, no analytics and no server of ours — nothing sits in the
@@ -258,10 +272,10 @@ footer a{margin:0 9px; display:inline-block}
     <a href="https://github.com/briskness-byte/NostrComments/blob/main/PRIVACY.md">The privacy
     policy</a> sets all of it out in full, before you install anything.
   </p>
-</section>
+</details>
 
-<section>
-  <h2>You can check all of this</h2>
+<details>
+  <summary>How to check all of this</summary>
 
   <p>
     <strong>There is no build step.</strong> The file you install is the file in the repository —
@@ -278,10 +292,10 @@ footer a{margin:0 9px; display:inline-block}
         privately.</li>
     <li>A dependency-free test suite that runs the shipped code: <code>node tests/run.mjs</code>.</li>
   </ul>
-</section>
+</details>
 
-<section id="signer">
-  <h2>Which signer to use</h2>
+<details id="signer">
+  <summary>Which signer to use (you do not need one)</summary>
 
   <p>
     <strong>You do not need one.</strong> NostrComments can create a key for you in one click and
@@ -323,10 +337,10 @@ footer a{margin:0 9px; display:inline-block}
     upstream too. I maintain it, so I am biased — use whichever you like. NostrComments works the
     same with any of them.
   </p>
-</section>
+</details>
 
-<section>
-  <h2>Support</h2>
+<details>
+  <summary>Support the project</summary>
 
   <p>
     NostrComments is free and open source, and every feature stays that way — there is no paid tier
@@ -366,6 +380,7 @@ footer a{margin:0 9px; display:inline-block}
   <p>
     Reporting a bug that you can reproduce is worth as much, and often more.
   </p>
+</details>
 </section>
 
 <section>
@@ -393,6 +408,10 @@ footer a{margin:0 9px; display:inline-block}
 // Where the clipboard is unavailable — an insecure origin, an older browser, a user who has denied
 // permission — the address is selected instead, so the fallback is still one gesture rather than a
 // dead button.
+// A link to #signer (or any folded section) should land on it open, not on a closed summary.
+const openTarget = () => { const t = location.hash && document.getElementById(location.hash.slice(1)); if (t && t.tagName === 'DETAILS') t.open = true; };
+addEventListener('hashchange', openTarget); openTarget();
+
 for (const b of document.querySelectorAll('.copy')) {
   b.addEventListener('click', async () => {
     try {
