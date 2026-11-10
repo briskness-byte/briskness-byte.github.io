@@ -3,71 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Read a NostrComments thread</title>
-<meta name="description" content="Read the comment thread attached to any web page, without installing anything.">
-<!--
-  A thread reader for people who have not installed the extension.
-
-  Everything happens in the visitor's browser: this page asks the same public relays the extension
-  asks, over WebSocket, and renders what comes back. There is no server here and no build step —
-  the same claim the extension makes about itself, and the reason this is a static file rather
-  than an app.
-
-  The reading itself lives in ../lib/read.js, shared with the embed. Parts of it are copied from
-  NostrComments-Chrome/content.js and MUST stay identical to it; thread/check.mjs says when not.
-
-  The policy below allows scripts and styles from this site only (none inline), and network
-  connections to the listed relays only. GitHub Pages cannot send headers, so it is a meta tag;
-  tests/run.mjs checks that connect-src matches the relay list in read.js.
--->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src wss://nos.lol wss://relay.damus.io wss://relay.primal.net wss://nostr.oxtr.dev wss://nostr.mom wss://relay.nostr.net; base-uri 'none'; form-action 'none'">
-<link rel="stylesheet" href="thread.css">
+<title>Read a thread — moved to nostrcomments.github.io</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://nostrcomments.github.io/thread/">
+<!-- Without script this lands on the right page, only without the ?url= part. -->
+<meta http-equiv="refresh" content="0; url=https://nostrcomments.github.io/thread/">
+<script>
+// The site moved in November 2026. Keep the path, the query and the fragment, so an old
+// "Read the thread: …/thread/?url=…" link in somebody's Nostr note opens the same thread there.
+location.replace('https://nostrcomments.github.io' + location.pathname + location.search + location.hash);
+</script>
 </head>
 <body>
-<div class="wrap">
-
-<header>
-  <img src="../favicon.svg" alt="">
-  <h1>Read a comment thread</h1>
-</header>
-<p class="sub">
-  Comments on any web page, stored on public Nostr relays rather than on the site. Paste an address
-  to see what has been said about it — nothing to install.
-</p>
-
-<form id="f">
-  <input type="url" id="u" placeholder="https://example.com/article" required>
-  <button type="submit">Show thread</button>
-</form>
-
-<p id="status"></p>
-<ol id="thread"></ol>
-
-<footer>
-  <p>
-    This page queries relays straight from your browser: <span class="note">nos.lol, relay.damus.io,
-    relay.primal.net, nostr.oxtr.dev, nostr.mom, relay.nostr.net</span>. They see the address you
-    look up and your IP, as any server you contact does. Nothing is sent anywhere else, and there is
-    no server behind this page.
-  </p>
-  <p>
-    Every comment, vote and name is shown only after its signature has been checked in your browser,
-    so a relay cannot put words in anyone's mouth. The thread follows the extension's rules: a
-    comment its author deleted is not shown, one with many down-votes is collapsed, and a run of
-    near-identical comments from one key is folded into one. Ordinary Nostr notes that link the page
-    are shown too, marked "note".
-  </p>
-  <p>
-    To write comments, and to see them on every page you visit, install the extension —
-    <a href="https://addons.mozilla.org/firefox/addon/nostrcomments/">Firefox</a> ·
-    <a href="https://chromewebstore.google.com/detail/nostrcomments/ebmgdpicceaencegknannfaljhbfgido">Chrome</a> ·
-    <a href="https://github.com/briskness-byte/NostrComments">source</a>
-  </p>
-</footer>
-
-</div>
-<script src="../lib/read.js"></script>
-<script src="../lib/draw.js"></script>
-<script src="thread.js"></script>
+<p>NostrComments has moved to <a href="https://nostrcomments.github.io/thread/">nostrcomments.github.io/thread/</a>.</p>
 </body>
 </html>
